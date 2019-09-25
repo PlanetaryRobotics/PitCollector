@@ -4,4 +4,7 @@
     <!-- Run all Robot Hardware Nodes -->
     <include file="src/hardware/hardware.launch"/>
 
+    <!-- Run collector node -->
+
+
 </launch>
