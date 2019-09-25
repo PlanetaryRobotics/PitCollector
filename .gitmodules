@@ -7,3 +7,6 @@
 [submodule "src/hardware/serial"]
 	path = src/hardware/serial
 	url = https://github.com/wjwwood/serial.git
+[submodule "src/hardware/avt_vimba_camera"]
+	path = src/hardware/avt_vimba_camera
+	url = https://github.com/astuff/avt_vimba_camera.git
