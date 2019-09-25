@@ -4,3 +4,6 @@
 [submodule "src/hardware/flir_ptu"]
 	path = src/hardware/flir_ptu
 	url = https://github.com/ros-drivers/flir_ptu.git
+[submodule "src/hardware/serial"]
+	path = src/hardware/serial
+	url = https://github.com/wjwwood/serial.git
