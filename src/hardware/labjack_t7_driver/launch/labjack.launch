@@ -1,0 +1,5 @@
+<launch>
+  <node name="labjack_node"    pkg="labjack_t7_driver"    type="labjack_node" output="screen">
+      <param name="IP" value="10.0.10.15"/>
+  </node>
+</launch>

@@ -1,0 +1,6 @@
+[submodule "src/hardware/ethzasl_xsens_driver"]
+	path = src/hardware/ethzasl_xsens_driver
+	url = https://github.com/ethz-asl/ethzasl_xsens_driver.git
+[submodule "src/hardware/flir_ptu"]
+	path = src/hardware/flir_ptu
+	url = https://github.com/ros-drivers/flir_ptu.git
