@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Start XSense IMU Node -->
+    <include file="$(find xsens_driver)/launch/xsens_driver.launch">
+        <arg name="device" value="auto"/>
+        <arg name="baudrate" value="0"/>
+    </include>
+
+    <!-- Start FLIR Pan/Tilt Driver -->
+    <include file="$(find flir_ptu_driver)/launch/ptu.launch">
+        <arg name="port" value="/dev/ptu"/>
+        <arg name="limits_enabled" value="true"/>
+    </include>
+
+</launch>

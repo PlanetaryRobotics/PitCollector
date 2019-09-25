@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Run all Robot Hardware Nodes -->
+    <include file="src/hardware/hardware.launch"/>
+
+</launch>
