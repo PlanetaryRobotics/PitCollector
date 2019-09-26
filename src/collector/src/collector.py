@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 import rospy
+from labjack import writeDIO, readDIO
 
 def main():
     rospy.init_node('collector')
@@ -8,6 +9,8 @@ def main():
     while not rospy.is_shutdown():
         # Do things here.
         print("Hello, PitCollector!")
+        writeDIO(0, True)
+        print("Pin 1: "+str(readDIO(1)))
         rate.sleep()
 
 

@@ -7,4 +7,7 @@
         <arg name="baudrate" value="0"/>
     </include>
 
+    <include file="$(find labjack_node)/launch/labjack_t7.launch">
+    </include>
+
 </launch>

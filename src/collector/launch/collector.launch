@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="collector" type="collector.py" name="collector" output="screen" respawn="false"/>
+</launch>

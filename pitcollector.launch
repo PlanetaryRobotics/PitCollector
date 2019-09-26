@@ -5,6 +5,7 @@
     <include file="src/hardware/hardware.launch"/>
 
     <!-- Run collector node -->
+    <include file="$(find collector)/launch/collector.launch"/>
 
 
 </launch>

@@ -1,0 +1,4 @@
+uint8 pin_id
+bool value
+---
+bool value
