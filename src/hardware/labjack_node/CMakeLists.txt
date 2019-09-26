@@ -38,10 +38,9 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  LabJackState.msg
-)
+#add_message_files(
+#  FILES
+#)
 
 ## Generate services in the 'srv' folder
 add_service_files(
@@ -86,3 +85,5 @@ target_link_libraries(${PROJECT_NAME}
   ${LABJACK_LIBS}
   ${catkin_LIBRARIES}
 )
+
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_generate_messages_cpp) 

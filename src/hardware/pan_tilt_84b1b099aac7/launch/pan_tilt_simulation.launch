@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="pan_tilt_driver" type="pan_tilt_driver_node" name="pan_tilt_driver_node" args="-p /dev/ttyUSB1" output="screen" >
+    <param name="simulation" type="bool" value="true" />
+  </node>
+</launch>

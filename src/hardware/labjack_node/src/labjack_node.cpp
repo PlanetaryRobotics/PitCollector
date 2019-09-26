@@ -1,6 +1,5 @@
 #include <ros/ros.h>
 #include <LJM_Utilities.h>
-#include "labjack_node/LabJackState.h"
 #include "labjack_node/ReadDIO.h"
 #include "labjack_node/WriteDIO.h"
 
