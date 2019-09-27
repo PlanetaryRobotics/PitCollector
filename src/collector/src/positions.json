@@ -1,0 +1,25 @@
+{
+  "length_inches": [
+    0,
+    10,
+    20,
+    30
+    ],
+  "height_inches": [
+    0,
+    10,
+    20,
+    30
+    ],
+  "pan_tilt": [
+    [-45,-10],
+    [-45,0],
+    [ 45,10]
+    ],
+  "shutter_speed": [
+    100,
+    200,
+    1000
+  ],
+  "output_directory": "/PitCollector/data"
+}

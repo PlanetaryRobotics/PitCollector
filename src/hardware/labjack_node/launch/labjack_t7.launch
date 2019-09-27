@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-
-    <!-- Start the labjack node. -->
-    <node pkg="labjack_node" type="labjack_node" name="labjack_node" output="screen" respawn="true">
-    </node>
-
-
-</launch>
