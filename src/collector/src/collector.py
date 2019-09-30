@@ -1,22 +1,16 @@
 #! /usr/bin/env python
 import rospy
-from labjack import writeDIO, readDIO
+from labjack_helpers import *
+from pan_tilt_helpers import *
 import json
 import sqlite3
 from sqlite3 import Error
 import sys
 
-#def startup_user_interaction():
-    #id = get_station_id()
-    #pos = get_survey_position()
-    #notes = get_notes()
-    #return (id, pos, notes)
 
-
-
-#https://likegeeks.com/python-sqlite3-tutorial/
 def sql_connection():
-    #connects to existing database or creates it on first run
+    # https://likegeeks.com/python-sqlite3-tutorial/
+    # connects to existing database or creates it on first run
     try:
         con = sqlite3.connect('/home/pipedream/PitCollector/src/collector/src/metadata.db')
         return con
@@ -75,7 +69,7 @@ def main():
         with open('/home/pipedream/PitCollector/src/collector/src/positions.json') as data_file:
             data = json.load(data_file)
 
-            #movements are hard-cded in logical order
+            # movements are hard-cded in logical order
             for length in data['length_inches']:
                 print('length: ' + str(length))
                 for height in data['height_inches']:
@@ -98,9 +92,55 @@ def main():
                                 sys.exit()
         rate.sleep()
 
+def demo_relays():
+    rospy.init_node('collector')
+    rate = rospy.Rate(10)
+
+    input_pins = range(FIO0, FIO7+1)
+    output_pins = range(EIO0, EIO7+1)
+
+    while not rospy.is_shutdown():
+        for i in range(8):
+            state = readDIO(input_pins[i])
+            writeDIO(output_pins[i], state)
+        rate.sleep()
+
+def demo_ptu():
+    rospy.init_node('collector')
+    rate = rospy.Rate(10)
+
+    ptu = PanTilt()
+    while not rospy.is_shutdown():
+        ptu = PanTilt()
+        ptu.setPanTilt(-90, -45)
+        ptu.setPanTilt(-60, -45)
+        ptu.setPanTilt(-30, -45)
+        ptu.setPanTilt(-0, -45)
+        ptu.setPanTilt(30, -45)
+        ptu.setPanTilt(60, -45)
+        ptu.setPanTilt(90, -45)
+        ptu.setPanTilt(0, 0)
+        rate.sleep()
+
+from sensor_msgs.msg import Imu
+
+def imuCallback(data):
+    quat = data.orientation
+    # Lee, you should write your code here...
+    # roll, pitch, yaw = quat2euler(quat)
+    print(quat)
+    # print(roll, pitch, yaw)
+
+def demo_imu():
+    rospy.init_node('collector')
+    rate = rospy.Rate(10)
+
+    rospy.Subscriber("/imu/data", Imu, imuCallback)
+    rospy.spin()
+
+
 if __name__=="__main__":
-    main()
-    try:
-        talker()
-    except rospy.ROSInterruptException:
-        pass
+    #main()
+    demo_relays()
+    #demo_ptu()
+    demo_imu()

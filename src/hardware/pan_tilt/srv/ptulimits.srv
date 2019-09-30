@@ -1,9 +1,0 @@
-Header header
----
-int32 pan_min
-int32 pan_max
-int32 tilt_min
-int32 tilt_max
-int32 pan_upper_speed
-int32 tilt_upper_speed
-bool result
