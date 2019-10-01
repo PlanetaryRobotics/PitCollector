@@ -6,7 +6,8 @@ import json
 import sqlite3
 from sqlite3 import Error
 import sys
-
+from tf.transformations import euler_from_quaternion, quaternion_from_euler
+import math
 
 def sql_connection():
     # https://likegeeks.com/python-sqlite3-tutorial/
@@ -124,23 +125,25 @@ def demo_ptu():
 
 from sensor_msgs.msg import Imu
 
+import numpy as np
 def imuCallback(data):
     quat = data.orientation
-    # Lee, you should write your code here...
-    # roll, pitch, yaw = quat2euler(quat)
-    print(quat)
-    # print(roll, pitch, yaw)
+    roll,pitch,yaw = euler_from_quaternion([quat.x,quat.y,quat.z,quat.w])
+    roll = np.degrees(roll)
+    pitch = np.degrees(pitch)
+    yaw = np.degrees(yaw)
+    #print(quat) 
+    print('roll: %s pitch %s yaw %s' % (roll, pitch, yaw))
+
 
 def demo_imu():
     rospy.init_node('collector')
-    rate = rospy.Rate(10)
-
     rospy.Subscriber("/imu/data", Imu, imuCallback)
     rospy.spin()
 
 
 if __name__=="__main__":
     #main()
-    demo_relays()
-    #demo_ptu()
-    demo_imu()
+    #demo_relays()
+    demo_ptu()
+    #demo_imu()
