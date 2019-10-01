@@ -3,12 +3,16 @@
 
     <!-- Start XSense IMU Node -->
     <include file="$(find xsens_driver)/launch/xsens_driver.launch">
-        <arg name="device" value="auto"/>
+	<arg name="device" value="/dev/xsens"/>
         <arg name="baudrate" value="0"/>
     </include>
 
     <!-- Start the Labjack Control Node -->
     <include file="$(find labjack_node)/launch/labjack_t7.launch">
+    </include>
+
+    <!-- Start the Pan/Tilt Node -->
+    <include file="$(find pan_tilt_driver)/launch/pan_tilt_serial.launch">
     </include>
 
 </launch>

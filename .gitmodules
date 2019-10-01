@@ -7,3 +7,6 @@
 [submodule "src/hardware/avt_vimba_camera"]
 	path = src/hardware/avt_vimba_camera
 	url = https://github.com/astuff/avt_vimba_camera.git
+[submodule "src/hardware/pan_tilt_driver"]
+	path = src/hardware/pan_tilt_driver
+	url = https://jsford@bitbucket.org/cmu_science_autonomy/pan_tilt_driver.git
