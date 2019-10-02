@@ -1,199 +1,96 @@
 #! /usr/bin/env python
 import rospy
-from labjack_helpers import *
-from pan_tilt_helpers import *
-import json
-import sqlite3
-from sqlite3 import Error
-import sys
-from tf.transformations import euler_from_quaternion, quaternion_from_euler
-import math
+import numpy as np
 
-def sql_connection():
-    # https://likegeeks.com/python-sqlite3-tutorial/
-    # connects to existing database or creates it on first run
-    try:
-        con = sqlite3.connect('/home/pipedream/PitCollector/src/collector/src/metadata.db')
-        return con
-    except Error:
-        print(Error)
+from rig import Rig
+from Tkinter import *
+from PIL import ImageTk,Image
+import tkFileDialog
+import Tkinter as tk
+import ScrolledText as tkst
 
-def sql_fetch(con):
-    #returns select * all from hardcoded database
-    cursorObj = con.cursor()
-    cursorObj.execute('SELECT * FROM employees')
-    rows = cursorObj.fetchall()
-    for row in rows:
-        print(row)
+class GUI:
+    def __init__(self):
+        self.rig = Rig()
+        self.root = Tk()
+        self.root.title("PitCollector")
 
-def yes_or_no(question):
-    reply = str(raw_input(question+' (y/n): ')).lower().strip()
-    if reply[0] == 'y':
-        return True
-    if reply[0] == 'n':
-        return False
-    else:
-        return yes_or_no("please enter y or n")
+        # Image Display Canvas
+        self.canvas = Canvas(self.root, width=500, height=300)
+        self.canvas.grid(row=0, column=0, rowspan=5, columnspan=1, padx=50, pady=50)
 
+        # Roll Label
+        self.roll_label = Label(self.root)
+        self.roll_label.grid(row=5, column=0, pady=30)
+
+        # Pitch Label
+        self.pitch_label = Label(self.root)
+        self.pitch_label.grid(row=6, column=0, pady=30)
+
+        # Name Label
+        self.name_label = Label(self.root, text="Name:")
+        self.name_label.grid(row=0, column=1, pady=50)
+        # Name Entry
+        self.name_entry = Entry(self.root)
+        self.name_entry.grid(row=0, column=2, padx=30)
+
+        # Comments Label
+        self.comments_label = Label(self.root, text="Comments:")
+        self.comments_label.grid(row=2, column=1)
+        self.comments_text = tkst.ScrolledText(self.root, width=50, height=8)
+        self.comments_text.grid(row=2, column=2, columnspan=3, padx=30)
+
+        # Home Button
+        self.home_btn = Button(self.root, text="Home")
+        self.home_btn.grid(row=3, column=1)
+        # Checkout Button
+        self.checkout_btn = Button(self.root, text="Checkout")
+        self.checkout_btn.grid(row=3, column=2)
+        # Start Button
+        self.start_btn = Button(self.root, text="Start")
+        self.start_btn.grid(row=3, column=3)
+        # Abort Button
+        self.abort_btn = Button(self.root, text="Abort")
+        self.abort_btn.grid(row=3, column=4)
+
+    def update(self):
+        if not rospy.is_shutdown():
+            self.update_roll_pitch_labels()
+
+            self.rig.update()
+            self.root.after(100, self.update)
+        else:
+            self.root.destroy()
+
+    def update_roll_pitch_labels(self):
+        roll, pitch = self.rig.get_roll_pitch()
+        self.roll_label.config(text="Roll (deg): {0:.2f}".format(roll))
+        self.pitch_label.config(text="Pitch (deg): {0:.2f}".format(pitch))
+
+    def mainloop(self):
+        self.root.after(100, self.update)
+        img = ImageTk.PhotoImage(Image.open("/home/pipedream/Downloads/test.jpg"))
+        self.canvas.create_image(10, 10, anchor=NW, image=img)
+
+        self.root.mainloop()
+
+
+def kill_ros():
+    import subprocess
+    subprocess.call(["rosnode", "kill", "--all"])
+    subprocess.call(["killall", "-9", "rosmaster"])
+    subprocess.call(["killall", "-9", "roscore"])
 
 
 def main():
     rospy.init_node('collector')
-    rate = rospy.Rate(10)
 
-    #establish connection
-    con = sql_connection()
-    cursorObj = con.cursor()
+    gui = GUI()
+    gui.mainloop()
 
-    #create new table for this position
-    cursorObj.execute("CREATE TABLE IF NOT EXISTS employees( \
-        id integer PRIMARY KEY AUTOINCREMENT, \
-        name text, \
-        salary real, \
-        department text, \
-        position text, \
-        hireDate text)")
-    con.commit()
-
-    #clean up the table prior to start
-    cursorObj.execute("DELETE FROM employees WHERE 1 = 1")
-    con.commit()
-
-    #settings = startup_user_interaction()
-    
-    while not rospy.is_shutdown():
-
-        #writeDIO(0, True)
-        #print("Pin 1: "+str(readDIO(1)))
-
-        #loop through the hard-coded position settings
-        with open('/home/pipedream/PitCollector/src/collector/src/positions.json') as data_file:
-            data = json.load(data_file)
-
-            # movements are hard-cded in logical order
-            for length in data['length_inches']:
-                print('length: ' + str(length))
-                for height in data['height_inches']:
-                    print('height: ' + str(height))
-                    for pan_tilt in data['pan_tilt']:
-                        print('pan_tilt: ' + str(pan_tilt))
-                        for shutter_speed in data['shutter_speed']:
-                            print('shutter_speed: ' + str(shutter_speed))
-                            if yes_or_no('Do you want to take the picture?'):
-
-                                print('Save metadata to sql')
-                                cursorObj.execute("INSERT INTO employees VALUES(null, 'John', 700, 'HR', 'Manager', '2017-01-04')")
-                                con.commit()
-
-                                print('Save next image being published')
-                                print('Success')
-                            else:
-                                sql_fetch(con)
-                                con.close()
-                                sys.exit()
-        rate.sleep()
-
-def demo_relays():
-    rospy.init_node('collector')
-    rate = rospy.Rate(10)
-
-    input_pins = range(FIO0, FIO7+1)
-    output_pins = range(EIO0, EIO7+1)
-
-    while not rospy.is_shutdown():
-        for i in range(8):
-            state = readDIO(input_pins[i])
-            writeDIO(output_pins[i], state)
-        rate.sleep()
+    if not rospy.is_shutdown():
+        kill_ros()
 
 
-from sensor_msgs.msg import Imu
-from std_msgs.msg import Float32
-import numpy as np
-imuCounter=0
-xAve = 0
-yAve = 0
-zAve = 0
-wAve = 0
-
-#average 80 measurements coming from the IMU quaternion
-#convert those average to euler degrees
-#publish those values to a topic
-def imuCallback(data):
-    global imuCounter
-    global xAve
-    global yAve
-    global zAve
-    global wAve
-
-    quat = data.orientation
-
-    #we are averaging 80 measurements to reduce noise in the IMU readings
-    #inspiration comes from radpiper/robot_controller_node.cpp
-    if (imuCounter%80 != 0):
-        xAve += quat.x;
-        yAve += quat.y;
-        zAve += quat.z;
-        wAve += quat.w;
-    else:
-        x = xAve / 80;
-        y = yAve / 80;
-        z = zAve / 80;
-        roll,pitch,yaw = euler_from_quaternion([quat.x,quat.y,quat.z,quat.w])
-
-        roll = np.degrees(roll)
-        pitch = np.degrees(pitch)
-        yaw = np.degrees(yaw)
-
-        roll_pub = rospy.Publisher('/imu/roll', Float32, queue_size=500)
-        pitch_pub = rospy.Publisher('/imu/pitch', Float32, queue_size=500)
-        yaw_pub = rospy.Publisher('/imu/yaw', Float32, queue_size=500)
-
-        roll_msg = Float32()
-        pitch_msg = Float32()
-        yaw_msg = Float32()
-
-        roll_msg.data = roll
-        pitch_msg.data = pitch
-        yaw_msg.data = yaw
-
-        roll_pub.publish(pitch_msg)
-        pitch_pub.publish(roll_msg)
-        yaw_pub.publish(yaw_msg)
-
-        print('roll: %s pitch %s yaw %s' % (roll, pitch, yaw))
-
-        #reset the averages back to 0 for every 80 cycles
-        xAve = 0
-        yAve = 0
-        zAve = 0
-        wAve = 0
-
-    imuCounter +=1
-    #print(quat) 
-
-
-def demo_imu():
-    rospy.init_node('collector')
-    rospy.Subscriber("/imu/data", Imu, imuCallback)
-    rospy.spin()
-
-def demo_ptu():
-    rospy.init_node('collector')
-
-    setPanTilt(-90, -45)
-    setPanTilt(-60, -45)
-    setPanTilt(-30, -45)
-    setPanTilt(0, -45)
-    setPanTilt(30, -45)
-    setPanTilt(60, -45)
-    setPanTilt(90, -45)
-    setPanTilt(0, 0)
-
-
-if __name__=="__main__":
-    #main()
-    #demo_relays()
-    demo_ptu()
-    #demo_imu()
-
+if __name__ == "__main__":
+    main()

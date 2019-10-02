@@ -45,13 +45,15 @@ EIO5 = DIO13
 EIO6 = DIO14
 EIO7 = DIO15
 
+
 def writeDIO(pin_num, value):
     rospy.wait_for_service('/labjack/write_dio/')
     try:
         write_srv = rospy.ServiceProxy('/labjack/write_dio/', WriteDIO)
         resp = write_srv(pin_num, value)
     except rospy.ServiceException, e:
-        print("Service call failed: %s"%e)
+        print("Service call failed: %s" % e)
+
 
 def readDIO(pin_num):
     rospy.wait_for_service('/labjack/read_dio/')
@@ -60,4 +62,4 @@ def readDIO(pin_num):
         resp = read_srv(pin_num)
         return resp.value
     except rospy.ServiceException, e:
-        print("Service call failed: %s"%e)
+        print("Service call failed: %s" % e)

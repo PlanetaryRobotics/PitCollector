@@ -3,6 +3,7 @@ import std_msgs.msg
 from pan_tilt_driver.srv import *
 import time
 
+
 def setPanTilt(pan_deg, tilt_deg):
     rospy.wait_for_service('ptu/goto')
     try:
