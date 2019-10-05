@@ -28,7 +28,7 @@ class GUI:
         self.pitch_label.grid(row=6, column=0, pady=30)
 
         # Name Label
-        self.name_label = Label(self.root, text="Name:")
+        self.name_label = Label(self.root, text="Location Name \"location_1\":")
         self.name_label.grid(row=0, column=1, pady=50)
         # Name Entry
         self.name_entry = Entry(self.root)
@@ -68,9 +68,14 @@ class GUI:
         self.pitch_label.config(text="Pitch (deg): {0:.2f}".format(pitch))
 
     def mainloop(self):
+        #update the GUI image with the latest image from the camera
         self.root.after(100, self.update)
         img = ImageTk.PhotoImage(Image.open("/home/pipedream/Downloads/test.jpg"))
         self.canvas.create_image(10, 10, anchor=NW, image=img)
+
+        #test run the ansel module
+        self.rig.take_and_save_images(self,'/camera/image_raw','~/PitCollector/data',3,20,30,False)
+        #camera_topic,file_path,image_count,step_size,base_grey,hdr
 
         self.root.mainloop()
 

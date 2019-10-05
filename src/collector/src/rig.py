@@ -21,6 +21,13 @@ class Rig:
         self.pitch = 0
         self.yaw = 0
 
+        self.camera_topic = ''
+        self.file_path = ''
+        self.image_count = 0
+        self.step_size = 0
+        self.base_grey = 0
+        self.hdr = False
+
     def imu_callback(self, msg):
         quat = msg.orientation
         r,p,y = euler_from_quaternion([quat.x, quat.y, quat.z, quat.w])
@@ -45,6 +52,17 @@ class Rig:
 
     def get_roll_pitch(self):
         return self.roll, self.pitch
+
+    def take_and_save_images(self,camera_topic,file_path,image_count,step_size,base_grey,hdr):
+        self.camera_topic = str(camera_topic)
+        self.file_path = str(file_path)
+        self.image_count = int(image_count)
+        self.step_size = int(step_size)
+        self.base_grey = int(base_grey)
+        self.hdr = bool(hdr)
+
+        takeAndSaveImages(self, self.camera_topic,self.file_path,self.image_count,self.step_size,self.base_grey,self.hdr)
+        return 
 
     def update(self):
         pass

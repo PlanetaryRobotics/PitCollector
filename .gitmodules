@@ -10,3 +10,6 @@
 [submodule "src/hardware/pan_tilt_driver"]
 	path = src/hardware/pan_tilt_driver
 	url = https://jsford@bitbucket.org/cmu_science_autonomy/pan_tilt_driver.git
+[submodule "src/hardware/ansel"]
+	path = src/hardware/ansel
+	url = https://github.com/Nekhera/ansel.git
