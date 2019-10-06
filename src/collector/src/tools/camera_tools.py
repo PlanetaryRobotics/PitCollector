@@ -17,7 +17,7 @@ def takeAndSaveImages(camera_topic,file_path,image_count,step_size,base_grey,hdr
 		req.base_grey = int(base_grey)
 		#apply HDR or not
 		req.hdr = bool(hdr)
-		resp = anser_srv(req)
+		resp = ansel_srv(req)
 		#AnselRequest:
 		#string rostopic
 		#string filepath
@@ -25,9 +25,9 @@ def takeAndSaveImages(camera_topic,file_path,image_count,step_size,base_grey,hdr
 		#uint8 step_size
 		#uint8 base_grey
 		#bool hdr
-		ROS_INFO('Taking and Saving Image. {}'.format(resp))
-	except (rospy.ServiceException, rospy.ROSException), e:
+		rospy.loginfo('Taking and Saving Image. {}'.format(resp))
+	except rospy.ServiceException, e:
 		print("Service call failed: {}".format(e))
 
-	time.sleep(5)
+	#time.sleep(5)
 	return resp

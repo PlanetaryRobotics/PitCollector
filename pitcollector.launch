@@ -2,10 +2,10 @@
 <launch>
 
     <!-- Run all Robot Hardware Nodes -->
-    <include file="src/hardware/hardware.launch"/>
+    <include file="src/hardware/hardware.launch"/ output="screen">
 
     <!-- Run collector node -->
-    <include file="$(find collector)/launch/collector.launch"/>
+    <include file="$(find collector)/launch/collector.launch"/ output="screen">
 
 
 </launch>

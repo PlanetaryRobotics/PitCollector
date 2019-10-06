@@ -3,6 +3,7 @@ import rospy
 import numpy as np
 
 from rig import Rig
+from camera import Camera
 from Tkinter import *
 from PIL import ImageTk,Image
 import tkFileDialog
@@ -13,6 +14,7 @@ class GUI:
     def __init__(self):
         self.rig = Rig()
         self.root = Tk()
+        self.camera = Camera()
         self.root.title("PitCollector")
 
         # Image Display Canvas
@@ -74,7 +76,9 @@ class GUI:
         self.canvas.create_image(10, 10, anchor=NW, image=img)
 
         #test run the ansel module
-        self.rig.take_and_save_images(self,'/camera/image_raw','~/PitCollector/data',3,20,30,False)
+        rospy.loginfo('savings images')
+        resp = self.camera.take_and_save_images('/camera/image_color','../PitCollector/data',3,20,30,False)
+        rospy.loginfo(resp)
         #camera_topic,file_path,image_count,step_size,base_grey,hdr
 
         self.root.mainloop()
