@@ -2,10 +2,27 @@
 <launch>
 
     <!-- Run all Robot Hardware Nodes -->
-    <include file="src/hardware/hardware.launch"/ output="screen">
+    <include file="src/hardware/hardware.launch"/>
 
     <!-- Run collector node -->
-    <include file="$(find collector)/launch/collector.launch"/ output="screen">
+    <include file="$(find collector)/launch/collector.launch"/>
 
 
 </launch>
+
+
+
+<!-- the GUI has
+
+Buttons
+home 
+abort
+
+start sequence
+checkout
+
+Output: shows current image, pan, tilt in degrees
+
+input: position name, description
+
+-->

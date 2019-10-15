@@ -75,10 +75,10 @@ class GUI:
         img = ImageTk.PhotoImage(Image.open("/home/pipedream/Downloads/test.jpg"))
         self.canvas.create_image(10, 10, anchor=NW, image=img)
 
-        #test run the ansel module
-        rospy.loginfo('savings images')
-        resp = self.camera.take_and_save_images('/camera/image_color','../PitCollector/data',3,20,30,False)
-        rospy.loginfo(resp)
+        # Test run the ansel module
+        rospy.loginfo('saving images in collector node')
+        resp = self.camera.take_and_save_images('/camera/image_color','../PitCollector/data',3,20,30,True)
+        #rospy.loginfo(resp)
         #camera_topic,file_path,image_count,step_size,base_grey,hdr
 
         self.root.mainloop()

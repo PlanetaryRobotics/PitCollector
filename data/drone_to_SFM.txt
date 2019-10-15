@@ -1,0 +1,11 @@
+
+Is it too dark
+is it too bright
+What is distorting the image
+is it the right perspectives?
+
+1. edit out the fly away shots
+2. break the film into every 1000th frame
+3. throw frames into a gallery
+4. turn the gallery into a SFM model
+5. See what the minimum number of images for SFM  model is

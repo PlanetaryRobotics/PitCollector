@@ -13,3 +13,6 @@
 [submodule "src/hardware/ansel"]
 	path = src/hardware/ansel
 	url = https://github.com/Nekhera/ansel.git
+[submodule "src/dataset2bag"]
+	path = src/dataset2bag
+	url = https://github.com/lrse/dataset2bag.git

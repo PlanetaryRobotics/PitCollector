@@ -28,7 +28,6 @@ class Rig:
         self.roll = self.roll*alpha + beta*np.degrees(r)
         self.pitch = self.pitch*alpha + beta*np.degrees(p)
         self.yaw = self.yaw*alpha + beta*np.degrees(y)
-        print(self.roll, self.pitch)
 
     def set_pan_tilt(self, pan, tilt):
         self.pan = pan
