@@ -45,21 +45,44 @@ EIO5 = DIO13
 EIO6 = DIO14
 EIO7 = DIO15
 
+pinMap = {\
+     'F0':FIO0, 'F1':FIO1, 'F2':FIO2, 'F3':FIO3, 'F4':FIO4, 'F5':FIO5, \
+     'F6':FIO6, 'F7':FIO7, 'E0':EIO0, 'E1':EIO1, 'E2':EIO2, 'E3':EIO3, \
+     'E4':EIO4, 'E5':EIO5, 'E6':EIO6, 'E7':EIO7 }
 
-def writeDIO(pin_num, value):
+def writeDIO(pin_name, value):
     rospy.wait_for_service('/labjack/write_dio/')
-    try:
-        write_srv = rospy.ServiceProxy('/labjack/write_dio/', WriteDIO)
-        resp = write_srv(pin_num, value)
-    except rospy.ServiceException, e:
-        print("Service call failed: %s" % e)
+    if pinMap[pin_name] in [EIO1,EIO3,EIO5]:
+        try:
+            write_srv = rospy.ServiceProxy('/labjack/write_dio/', WriteDIO)
+            resp = write_srv(pinMap[pin_name], value)
+            print('writeDIO success')
+        except rospy.ServiceException, e:
+            print("Service call failed: %s" % e)
+    else:
+        print('Invalid pin for writing to in writeDIO ', pin_name )
 
+#separate motor writes from direction writes
+def writeMotorsDIO(pin_name, value):
+    rospy.wait_for_service('/labjack/write_dio/')
+    if pinMap[pin_name] in [EIO0,EIO2,EIO4]:
+        try:
+            write_srv = rospy.ServiceProxy('/labjack/write_dio/', WriteDIO)
+            resp = write_srv(pinMap[pin_name], value)
+        except rospy.ServiceException, e:
+            print("Service call failed: %s" % e)
+    else:
+        print('Invalid pin for writing to in writeMotorsDIO ', pin_name )
 
-def readDIO(pin_num):
+def readDIO(pin_name):
     rospy.wait_for_service('/labjack/read_dio/')
-    try:
-        read_srv = rospy.ServiceProxy('/labjack/read_dio/', ReadDIO)
-        resp = read_srv(pin_num)
-        return resp.value
-    except rospy.ServiceException, e:
-        print("Service call failed: %s" % e)
+    #these are the only valid pins that should be read/write
+    if pinMap[pin_name] in [FIO0,FIO1,FIO2,FIO3,FIO4,FIO5,FIO6,FIO7]:
+        try:
+            read_srv = rospy.ServiceProxy('/labjack/read_dio/', ReadDIO)
+            resp = read_srv(pinMap[pin_name])
+            return resp.value
+        except rospy.ServiceException, e:
+            print("Service call failed: %s" % e)
+    else: 
+        print('Invalid pin entered for reading in ReadDIO ', pin_num)

@@ -9,10 +9,14 @@ from PIL import ImageTk,Image
 import tkFileDialog
 import Tkinter as tk
 import ScrolledText as tkst
+import time
 
 class GUI:
     def __init__(self):
         self.rig = Rig()
+        #the switch can be left on from previoius hanging run. need to kill it ASAP
+        self.rig.kill_all_motors()
+
         self.root = Tk()
         self.camera = Camera()
         self.root.title("PitCollector")
@@ -71,18 +75,58 @@ class GUI:
 
     def mainloop(self):
         #update the GUI image with the latest image from the camera
+        self.rig.kill_all_motors()
         self.root.after(100, self.update)
         img = ImageTk.PhotoImage(Image.open("/home/pipedream/Downloads/test.jpg"))
         self.canvas.create_image(10, 10, anchor=NW, image=img)
 
+        #there seems to be a lag inputting pins from the Labjack. Adding a short sleep so we don't call 
+        #any movement functions that depend on it
+
+        #print('goto F2')
+        #print(self.rig.x_axis_go_to('F2'))
+
+        #print('set y0 axis')
+        #print(self.rig.y0_axis_set_up())
+
+        #why does this output empty set???
+        print(self.rig.return_true_pin_names(self.rig.read_all_input_pins()))
+
+        print('collector: check for positive pins y1')
+        print(self.rig.check_for_positive_pins(['F6','F7']))
+
+        #print('y0 micromove')
+        #print(self.rig.y0_move_and_then_micro_move(['F4','F5']))
+
+        print('collector: y1 go to F6')
+        print(self.rig.y1_axis_go_to('F6'))
+        print('collector: y1 goto F7')
+        print(self.rig.y1_axis_go_to('F7'))
+        print('collector: y1 goto F6')
+        print(self.rig.y1_axis_go_to('F6'))
+
+        print('collector: y0 go to F4')
+        #print(self.rig.y0_axis_go_to('F4'))
+        #print('collector: y0 goto F5')
+        #print(self.rig.y0_axis_go_to('F5'))
+
+        print('collector: goto F1')
+        #print(self.rig.x_axis_go_to('F1'))
+        #print('collector: goto F2')
+        #print(self.rig.x_axis_go_to('F2'))
+
+        #print('goto F0')
+        #print(self.rig.x_axis_go_to('F0'))
+        #print('goto F1')
+        #print(self.rig.x_axis_go_to('F1'))
+
         # Test run the ansel module
-        rospy.loginfo('saving images in collector node')
-        resp = self.camera.take_and_save_images('/camera/image_color','../PitCollector/data',3,20,30,True)
+        #rospy.loginfo('saving images in collector node')
+        #resp = self.camera.take_and_save_images('/camera/image_color','../PitCollector/data',3,20,30,True)
         #rospy.loginfo(resp)
         #camera_topic,file_path,image_count,step_size,base_grey,hdr
 
         self.root.mainloop()
-
 
 def kill_ros():
     import subprocess
@@ -90,16 +134,14 @@ def kill_ros():
     subprocess.call(["killall", "-9", "rosmaster"])
     subprocess.call(["killall", "-9", "roscore"])
 
-
-def main():
+if __name__ == "__main__":
     rospy.init_node('collector')
-
     gui = GUI()
+    print('Collector: delay 2 seconds for labjack to read correctly')
+    #stime.sleep(2)
     gui.mainloop()
 
     if not rospy.is_shutdown():
+        #kill all motors in event of abort
+        gui.rig.kill_all_motors()
         kill_ros()
-
-
-if __name__ == "__main__":
-    main()
