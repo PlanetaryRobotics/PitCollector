@@ -10,6 +10,7 @@ import time
 import numpy as np
 from sensor_msgs.msg import Imu
 from tf.transformations import euler_from_quaternion
+import json
 
 class Rig:
     def __init__(self):
@@ -27,9 +28,9 @@ class Rig:
         self.yaw = 0
 
         self.positionMap = { \
-        'C1': ['F0','F5','F7'], 'C2':['F1','F5','F7'], 'C3':['F2','F5','F7'], \
-        'B1': ['F0','F5','F6'], 'B2':['F1','F5','F6'], 'B3':['F2','F5','F6'],  \
-        'A1': ['F0','F4','F6'], 'A2':['F1','F4','F6'], 'A3':['F2','F4','F6'],  \
+        '7': ['F0','F5','F7'], '8':['F1','F5','F7'], '9':['F2','F5','F7'], \
+        '4': ['F0','F5','F6'], '5':['F1','F5','F6'], '6':['F2','F5','F6'],  \
+        '1': ['F0','F4','F6'], '2':['F1','F4','F6'], '3':['F2','F4','F6'],  \
         }
 
         self.currentPosition = ''
@@ -117,7 +118,7 @@ class Rig:
             if i in ['F0','F1','F2','F3','F4','F5','F6','F7']:
                 pass
             else:
-                print('check_for_positive_pins: invalid pin input. aborting.')
+                #print('check_for_positive_pins: invalid pin input. aborting.')
                 sys.exit(0)
                 return False
 
@@ -135,6 +136,61 @@ class Rig:
                 print('check_for_positive_pins: failed', i)
                 pass
         return False
+
+    def go_to_pos(self,pos):
+        if pos in range(1,9):
+            self.x_axis_go_to(self.positionMap[str(pos)][0])
+            self.y0_axis_go_to(self.positionMap[str(pos)][1])        
+            self.y1_axis_go_to(self.positionMap[str(pos)][2])
+            print('Rig: successfully moved to position', pos)
+
+    def go_home_no_safeguard(self):
+        self.go_to_pos(1)
+        self.set_pan_tilt(0,0)
+
+    def run_full_sequence(self,filepath):
+        print('rig: loading json position sequence')
+        with open(filepath) as json_file:
+            data = json.load(json_file)
+        #for each position
+
+        cnt = 0
+        for position_pan_tilt in data['position_pan_tilt']:
+            #goto first position in json
+            if cnt == 0:
+                position = position_pan_tilt[0]
+                pan  = position_pan_tilt[1]
+                tilt = position_pan_tilt[2]
+                #goto first position
+                print('rig: initialize position',position)
+                self.go_to_pos(position)
+                #goto pan/tilt
+                print('rig: initialize pan/tilt',pan,tilt )
+                self.set_pan_tilt(pan,tilt)
+
+            elif position != position_pan_tilt[0]:
+                position = position_pan_tilt[0]
+                #goto new position
+                print('rig: change position',position)
+                self.go_to_pos(position)
+
+            if pan != position_pan_tilt[1] or tilt != position_pan_tilt[2]:
+                #goto next pan tilt
+                pan  = position_pan_tilt[1]
+                tilt = position_pan_tilt[2]
+                #goto pan/tilt
+                print('rig: change pan/tilt',pan,tilt )
+                self.set_pan_tilt(pan,tilt)
+            
+            print('set exposure 1')
+            print('take image')
+            print('set exposure 2')
+            print('take image')
+            print('set exposure 3')
+            print('takeimage')
+
+            cnt += 1
+            #end of loop
 
     def kill_all_motors(self):
         #function to shut it all off

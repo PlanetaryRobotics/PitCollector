@@ -11,6 +11,8 @@ import Tkinter as tk
 import ScrolledText as tkst
 import time
 
+import json
+
 class GUI:
     def __init__(self):
         self.rig = Rig()
@@ -59,6 +61,11 @@ class GUI:
         self.abort_btn = Button(self.root, text="Abort")
         self.abort_btn.grid(row=3, column=4)
 
+        self.rig.kill_all_motors()
+        self.root.after(100, self.update)
+        img = ImageTk.PhotoImage(Image.open("/home/pipedream/Downloads/test.jpg"))
+        self.canvas.create_image(10, 10, anchor=NW, image=img)
+
     def update(self):
         if not rospy.is_shutdown():
             self.update_roll_pitch_labels()
@@ -92,28 +99,25 @@ class GUI:
         #why does this output empty set???
         print(self.rig.return_true_pin_names(self.rig.read_all_input_pins()))
 
-        print('collector: check for positive pins y1')
-        print(self.rig.check_for_positive_pins(['F6','F7']))
+        #print('collector: check for positive pins y1')
+        #print(self.rig.check_for_positive_pins(['F6','F7']))
 
-        #print('y0 micromove')
-        #print(self.rig.y0_move_and_then_micro_move(['F4','F5']))
+        #print('collector: y1 go to F6')
+        #print(self.rig.y1_axis_go_to('F6'))
+        #print('collector: y1 goto F7')
+        #print(self.rig.y1_axis_go_to('F7'))
+        #print('collector: y1 goto F6')
+        #print(self.rig.y1_axis_go_to('F6'))
 
-        print('collector: y1 go to F6')
-        print(self.rig.y1_axis_go_to('F6'))
-        print('collector: y1 goto F7')
-        print(self.rig.y1_axis_go_to('F7'))
-        print('collector: y1 goto F6')
-        print(self.rig.y1_axis_go_to('F6'))
-
-        print('collector: y0 go to F4')
+        #print('collector: y0 go to F4')
         #print(self.rig.y0_axis_go_to('F4'))
         #print('collector: y0 goto F5')
         #print(self.rig.y0_axis_go_to('F5'))
 
-        print('collector: goto F1')
+        #print('collector: x axis goto F0')
+        #print(self.rig.x_axis_go_to('F0'))
+        #print('collector: goto F1')
         #print(self.rig.x_axis_go_to('F1'))
-        #print('collector: goto F2')
-        #print(self.rig.x_axis_go_to('F2'))
 
         #print('goto F0')
         #print(self.rig.x_axis_go_to('F0'))
@@ -124,8 +128,13 @@ class GUI:
         #rospy.loginfo('saving images in collector node')
         #resp = self.camera.take_and_save_images('/camera/image_color','../PitCollector/data',3,20,30,True)
         #rospy.loginfo(resp)
-        #camera_topic,file_path,image_count,step_size,base_grey,hdr
+        #camera_topic,file_path,image_count,step_size,base_grey,hdr]
 
+        #import os
+        #cwd = os.getcwd()
+        #print(cwd)
+        self.rig.go_home_no_safeguard()
+        self.rig.run_full_sequence('/home/pipedream/PitCollector/json_sequences/sequence_of_positions.json')
         self.root.mainloop()
 
 def kill_ros():
@@ -137,9 +146,9 @@ def kill_ros():
 if __name__ == "__main__":
     rospy.init_node('collector')
     gui = GUI()
-    print('Collector: delay 2 seconds for labjack to read correctly')
-    #stime.sleep(2)
     gui.mainloop()
+
+
 
     if not rospy.is_shutdown():
         #kill all motors in event of abort
