@@ -1,4 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-    <node pkg="collector" type="collector.py" name="collector" output="screen" respawn="false"/>
+
+    <arg name="seq_file"/>
+    <node pkg="collector" type="collector.py" name="collector" output="screen" respawn="false">
+	    <param name="seq_file" value="$(arg seq_file)"/>
+    </node>
 </launch>
