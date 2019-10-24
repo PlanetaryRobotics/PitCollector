@@ -12,6 +12,8 @@ from sensor_msgs.msg import Imu
 from tf.transformations import euler_from_quaternion
 import json
 
+from camera import Camera
+
 class Rig:
     def __init__(self):
         self.pos = 0
@@ -33,9 +35,15 @@ class Rig:
         '1': ['F0','F4','F6'], '2':['F1','F4','F6'], '3':['F2','F4','F6'],  \
         }
 
+        #needed to create a camera object in the rig b/c the camera is triggered from inside the rig's logic
+        self.camera = Camera()
+
         self.currentPosition = ''
         #self.currentPosition = self.get_current_position()
         #print (self.currentPosition)
+
+        #this initilizes the positive pins list
+        self.check_for_positive_pins(['F0'])
 
     def imu_callback(self, msg):
         quat = msg.orientation
@@ -60,7 +68,6 @@ class Rig:
 
     def get_roll_pitch(self):
         return self.roll, self.pitch
-
 
     def get_current_position(self):
         # first read all the F pins (limit switches)
@@ -126,14 +133,14 @@ class Rig:
         #print('check_for_positive_pins:',positive_pins)
         #this is an OR check. If either pin is in the positive pin list, exit the function and return true
         #this makes is easy to set two limits
-        print(values)
+        #print(values)
         for i in set(values):
-            print(i,positive_pins)
+            #print(i,positive_pins)
             if i in set(positive_pins):
                 print('check_for_positive_pins: triggered.', i)
                 return True
             else:
-                print('check_for_positive_pins: failed', i)
+                #print('check_for_positive_pins: failed', i)
                 pass
         return False
 
@@ -182,15 +189,15 @@ class Rig:
                 print('rig: change pan/tilt',pan,tilt )
                 self.set_pan_tilt(pan,tilt)
             
-            print('set exposure 1')
-            print('take image')
-            print('set exposure 2')
-            print('take image')
-            print('set exposure 3')
-            print('takeimage')
+            print('rig:taking 3 bracketed images - position number',cnt)
+            resp = self.camera.take_3_bracketed_images('/camera/image_color','../PitCollector/data',3,20000)
 
             cnt += 1
             #end of loop
+
+        #end loop, close program
+        self.go_home_no_safeguard()
+        print('rig:sequence compelete')
 
     def kill_all_motors(self):
         #function to shut it all off

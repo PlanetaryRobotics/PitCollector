@@ -1,6 +1,26 @@
 import rospy
 from ansel.srv import *
 
+def tools_take_3_bracketed_images(camera_topic,file_path,image_count,exposure_time_microseconds):
+	rospy.wait_for_service('ansel')
+	try:
+		ansel_srv = rospy.ServiceProxy('ansel', Ansel)
+		req = AnselRequest()
+		#service that the camera is publishing to
+		req.rostopic = str(camera_topic)
+		req.filepath = str(file_path)
+		req.image_count = int(image_count)
+		req.exposure_time_microseconds = int(exposure_time_microseconds)
+		resp = ansel_srv(req)
+
+		rospy.loginfo('camera_tools.py take_3_bracketed_images: Taking and Saving Image. {}'.format(resp))
+		return resp
+	except rospy.ServiceException, e:
+		print("Service call failed: {}".format(e))
+		return False
+
+
+'''
 def takeAndSaveImages(camera_topic,file_path,image_count,step_size,base_grey,hdr):
 	rospy.wait_for_service('ansel')
 	try:
@@ -31,3 +51,4 @@ def takeAndSaveImages(camera_topic,file_path,image_count,step_size,base_grey,hdr
 
 	#time.sleep(5)
 	return resp
+'''

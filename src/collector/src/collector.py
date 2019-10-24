@@ -3,7 +3,7 @@ import rospy
 import numpy as np
 
 from rig import Rig
-from camera import Camera
+
 from Tkinter import *
 from PIL import ImageTk,Image
 import tkFileDialog
@@ -20,7 +20,7 @@ class GUI:
         self.rig.kill_all_motors()
 
         self.root = Tk()
-        self.camera = Camera()
+        #self.camera = Camera()
         self.root.title("PitCollector")
 
         # Image Display Canvas
@@ -87,6 +87,11 @@ class GUI:
         img = ImageTk.PhotoImage(Image.open("/home/pipedream/Downloads/test.jpg"))
         self.canvas.create_image(10, 10, anchor=NW, image=img)
 
+        self.rig.go_home_no_safeguard()
+
+        print('collector: running full sequence start to finish')
+        self.rig.run_full_sequence('/home/pipedream/PitCollector/json_sequences/test_run.json')
+
         #there seems to be a lag inputting pins from the Labjack. Adding a short sleep so we don't call 
         #any movement functions that depend on it
 
@@ -126,15 +131,14 @@ class GUI:
 
         # Test run the ansel module
         #rospy.loginfo('saving images in collector node')
-        #resp = self.camera.take_and_save_images('/camera/image_color','../PitCollector/data',3,20,30,True)
+        #resp = self.camera.take_3_bracketed_images('/camera/image_color','../PitCollector/data',3,5000)
         #rospy.loginfo(resp)
         #camera_topic,file_path,image_count,step_size,base_grey,hdr]
 
         #import os
         #cwd = os.getcwd()
         #print(cwd)
-        self.rig.go_home_no_safeguard()
-        self.rig.run_full_sequence('/home/pipedream/PitCollector/json_sequences/sequence_of_positions.json')
+
         self.root.mainloop()
 
 def kill_ros():
@@ -146,9 +150,10 @@ def kill_ros():
 if __name__ == "__main__":
     rospy.init_node('collector')
     gui = GUI()
+    #give the camera time to sleet
+    #print('collector: sleeping for several seconds to let cameras w/u sequence complete')
+    #time.sleep(60)
     gui.mainloop()
-
-
 
     if not rospy.is_shutdown():
         #kill all motors in event of abort

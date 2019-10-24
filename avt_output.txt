@@ -1,0 +1,1578 @@
+[0m[ INFO] [1571677891.253178463]: [Vimba System]: AVT Vimba System initialized successfully[0m
+[0m[ INFO] [1571677891.409678136]: 	/// Camera Name: GE4900C[0m
+[0m[ INFO] [1571677891.409776600]: 	/// Model Name: GE4900C (02-2096C)[0m
+[0m[ INFO] [1571677891.409830407]: 	/// Camera ID: DEV_000F310200FB[0m
+[0m[ INFO] [1571677891.409899942]: 	/// Serial Number: 02-2096C-06076[0m
+[0m[ INFO] [1571677891.409951365]: 	/// @ Interface ID: enp2s0[0m
+[0m[ INFO] [1571677891.517324653]: Trying to open camera by IP: 192.168.0.199[0m
+[0m[ INFO] [1571677891.717971031]: [/camera]: Opened camera with
+		 * Name     : GE4900C
+		 * Model    : GE4900C (02-2096C)
+		 * ID       : DEV_000F310200FB
+		 * S/N      : 02-2096C-06076
+		 * Itf. ID  : enp2s0
+		 * Itf. Type: GigE
+		 * Access   : [0m
+/// Feature Name: AcquisitionAbort
+/// Display Name: AcquisitionAbort
+/// Tooltip: 
+/// Description: Abort acquisition. Acquisition will stop immediately, but a partially transferred image will be completed.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: [None]
+
+/// Feature Name: AcquisitionFrameCount
+/// Display Name: AcquisitionFrameCount
+/// Tooltip: 
+/// Description: This is the number of images to acquire when in MultiFrame and Recorder acquisition modes.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 1 int
+
+/// Feature Name: AcquisitionFrameRateAbs
+/// Display Name: AcquisitionFrameRateAbs
+/// Tooltip: 
+/// Description: Frame rate, in frames per second. This is applicable when either the FrameStart trigger mode is disabled, or the FrameStart trigger source is FixedRate. Depending on the exposure duration, the camera may not achieve the frame rate set here.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 4 float
+
+/// Feature Name: AcquisitionFrameRateLimit
+/// Display Name: AcquisitionFrameRateLimit
+/// Tooltip: 
+/// Description: This is the maximum frame rate possible for the current exposure duration and image format.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 4.21003 float
+
+/// Feature Name: AcquisitionMode
+/// Display Name: AcquisitionMode
+/// Tooltip: 
+/// Description: The acquisition mode determines the behavior of the camera when acquisition start is triggered. "Continuous" mode: the camera will acquire images until acquisition stop is triggered. "SingleFrame" mode: the camera will acquire a single image. "MultiFrame" mode: the camera will acquire the number of images specified by AcquisitionFrameCount. "Recorder" mode: the camera will run continuously, and when the recorder event is triggered, send pre-trigger and post-trigger images to the host.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Continuous str Enum
+
+/// Feature Name: AcquisitionStart
+/// Display Name: AcquisitionStart
+/// Tooltip: 
+/// Description: Start acquisition. Before image acquisition can occur, acquisition must be started, either by a hardware trigger or this software command.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: [None]
+
+/// Feature Name: AcquisitionStop
+/// Display Name: AcquisitionStop
+/// Tooltip: 
+/// Description: Stop acquisition. Acquisition will stop after acquisition of the current frame is complete.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: [None]
+
+/// Feature Name: BalanceRatioAbs
+/// Display Name: BalanceRatioAbs
+/// Tooltip: 
+/// Description: Adjust the gain of the red or blue channel (see BalanceRatioSelector). The green channel gain is always 1.00.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 1.02 float
+
+/// Feature Name: BalanceRatioSelector
+/// Display Name: BalanceRatioSelector
+/// Tooltip: 
+/// Description: Select the Red or Blue channel to adjust with BalanceRatioAbs.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Red str Enum
+
+/// Feature Name: BalanceWhiteAuto
+/// Display Name: BalanceWhiteAuto
+/// Tooltip: 
+/// Description: Automatic whitebalance mode. Off: automatic mode is off. Once: auto-whitebalance occurs until target is achieved, then BalanceWhiteAuto returns to Off. Continuous: auto-whitebalance always runs.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Continuous str Enum
+
+/// Feature Name: BalanceWhiteAutoAdjustTol
+/// Display Name: BalanceWhiteAutoAdjustTol
+/// Tooltip: 
+/// Description: Tolerance, in percent, allowed from the ideal whitebalance values, within which the auto-whitebalance does not run. This prevents needless small adjustments from occurring each image.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 5 int
+
+/// Feature Name: BalanceWhiteAutoRate
+/// Display Name: BalanceWhiteAutoRate
+/// Tooltip: 
+/// Description: Rate of white balance adjustments, from 1 (slowest) to 100 (fastest). Use this control to slow down the auto-whitebalance adjustments.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 100 int
+
+/// Feature Name: BandwidthControlMode
+/// Display Name: BandwidthControlMode
+/// Tooltip: 
+/// Description: Bandwidth allocation can be controlled by StreamBytesPerSecond, or by register SCPD0. If you do not understand SCPD0 and how this driver uses this register, leave this set to "StreamBytesPerSecond".
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: StreamBytesPerSecond str Enum
+
+/// Feature Name: BinningHorizontal
+/// Display Name: BinningHorizontal
+/// Tooltip: 
+/// Description: Binning in horizontal direction. Binning is the summing of charge of adjacent pixels.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 1 int
+
+/// Feature Name: BinningVertical
+/// Display Name: BinningVertical
+/// Tooltip: 
+/// Description: Binning in vertical direction. Binning is the summing of charge of adjacent pixels.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 1 int
+
+/// Feature Name: ChunkModeActive
+/// Display Name: ChunkModeActive
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 0 bool
+
+/// Feature Name: DSPSubregionBottom
+/// Display Name: DSPSubregionBottom
+/// Tooltip: 
+/// Description: The DSP subregion is the area of the image used for measurements in "auto-" functions such as auto-exposure and auto-gain. DSPSubregionLeft is the bottom row, relative to the current image region. For convenience, this value may be higher than the maximum Height.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 1440 int
+
+/// Feature Name: DSPSubregionLeft
+/// Display Name: DSPSubregionLeft
+/// Tooltip: 
+/// Description: The DSP subregion is the area of the image used for measurements in "auto-" functions such as auto-exposure and auto-gain. DSPSubregionLeft is the left column, relative to the current image region.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: DSPSubregionRight
+/// Display Name: DSPSubregionRight
+/// Tooltip: 
+/// Description: The DSP subregion is the area of the image used for measurements in "auto-" functions such as auto-exposure and auto-gain. DSPSubregionLeft is the right column, relative to the current image region. For convenience, this value may be higher than the maximum Width.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 1920 int
+
+/// Feature Name: DSPSubregionTop
+/// Display Name: DSPSubregionTop
+/// Tooltip: 
+/// Description: The DSP subregion is the area of the image used for measurements in "auto-" functions such as auto-exposure and auto-gain. DSPSubregionLeft is the top row, relative to the current image region.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: DefectMaskColumnEnable
+/// Display Name: DefectMaskColumnEnable
+/// Tooltip: 
+/// Description: Enable masking of defective columns. Defective columns are detected and recorded at the factory.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: Enabled str Enum
+
+/// Feature Name: DeviceFirmwareVersion
+/// Display Name: DeviceFirmwareVersion
+/// Tooltip: 
+/// Description: Firmware version of this Prosilica GigE camera.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 00.01.42.04  str
+
+/// Feature Name: DeviceID
+/// Display Name: DeviceID
+/// Tooltip: 
+/// Description: Serial number.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 02-2096C-06076 str
+
+/// Feature Name: DeviceModelName
+/// Display Name: DeviceModelName
+/// Tooltip: 
+/// Description: Camera model name.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: GE4900C str
+
+/// Feature Name: DevicePartNumber
+/// Display Name: DevicePartNumber
+/// Tooltip: 
+/// Description: Device part number.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 02-2096C str
+
+/// Feature Name: DeviceScanType
+/// Display Name: DeviceScanType
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Areascan str Enum
+
+/// Feature Name: DeviceUserID
+/// Display Name: DeviceUserID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value:  str
+
+/// Feature Name: DeviceVendorName
+/// Display Name: DeviceVendorName
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Allied Vision Technologies str
+
+/// Feature Name: EventAcquisitionEnd
+/// Display Name: EventAcquisitionEnd
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40001 int
+
+/// Feature Name: EventAcquisitionEndFrameID
+/// Display Name: EventAcquisitionEndFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventAcquisitionEndTimestamp
+/// Display Name: EventAcquisitionEndTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventAcquisitionRecordTrigger
+/// Display Name: EventAcquisitionRecordTrigger
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 40004 int
+
+/// Feature Name: EventAcquisitionRecordTriggerFrameID
+/// Display Name: EventAcquisitionRecordTriggerFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventAcquisitionRecordTriggerTimestamp
+/// Display Name: EventAcquisitionRecordTriggerTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventAcquisitionStart
+/// Display Name: EventAcquisitionStart
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40000 int
+
+/// Feature Name: EventAcquisitionStartFrameID
+/// Display Name: EventAcquisitionStartFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventAcquisitionStartTimestamp
+/// Display Name: EventAcquisitionStartTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventError
+/// Display Name: EventError
+/// Tooltip: 
+/// Description: ID value of error event. The error event occurs if there is a problem on the camera; this event should be reported to technical support. If you use the message channel for event notification, you are always subscribed to this event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 65535 int
+
+/// Feature Name: EventErrorFrameID
+/// Display Name: EventErrorFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventErrorTimestamp
+/// Display Name: EventErrorTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventExposureEnd
+/// Display Name: EventExposureEnd
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40003 int
+
+/// Feature Name: EventExposureEndFrameID
+/// Display Name: EventExposureEndFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventExposureEndTimestamp
+/// Display Name: EventExposureEndTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventFrameTrigger
+/// Display Name: EventFrameTrigger
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40002 int
+
+/// Feature Name: EventFrameTriggerFrameID
+/// Display Name: EventFrameTriggerFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventFrameTriggerTimestamp
+/// Display Name: EventFrameTriggerTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine1FallingEdge
+/// Display Name: EventLine1FallingEdge
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40011 int
+
+/// Feature Name: EventLine1FallingEdgeFrameID
+/// Display Name: EventLine1FallingEdgeFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine1FallingEdgeTimestamp
+/// Display Name: EventLine1FallingEdgeTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine1RisingEdge
+/// Display Name: EventLine1RisingEdge
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40010 int
+
+/// Feature Name: EventLine1RisingEdgeFrameID
+/// Display Name: EventLine1RisingEdgeFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine1RisingEdgeTimestamp
+/// Display Name: EventLine1RisingEdgeTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine2FallingEdge
+/// Display Name: EventLine2FallingEdge
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40013 int
+
+/// Feature Name: EventLine2FallingEdgeFrameID
+/// Display Name: EventLine2FallingEdgeFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine2FallingEdgeTimestamp
+/// Display Name: EventLine2FallingEdgeTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine2RisingEdge
+/// Display Name: EventLine2RisingEdge
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40012 int
+
+/// Feature Name: EventLine2RisingEdgeFrameID
+/// Display Name: EventLine2RisingEdgeFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine2RisingEdgeTimestamp
+/// Display Name: EventLine2RisingEdgeTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine3FallingEdge
+/// Display Name: EventLine3FallingEdge
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40015 int
+
+/// Feature Name: EventLine3FallingEdgeFrameID
+/// Display Name: EventLine3FallingEdgeFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine3FallingEdgeTimestamp
+/// Display Name: EventLine3FallingEdgeTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine3RisingEdge
+/// Display Name: EventLine3RisingEdge
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40014 int
+
+/// Feature Name: EventLine3RisingEdgeFrameID
+/// Display Name: EventLine3RisingEdgeFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine3RisingEdgeTimestamp
+/// Display Name: EventLine3RisingEdgeTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine4FallingEdge
+/// Display Name: EventLine4FallingEdge
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40017 int
+
+/// Feature Name: EventLine4FallingEdgeFrameID
+/// Display Name: EventLine4FallingEdgeFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine4FallingEdgeTimestamp
+/// Display Name: EventLine4FallingEdgeTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine4RisingEdge
+/// Display Name: EventLine4RisingEdge
+/// Tooltip: 
+/// Description: ID value of event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 40016 int
+
+/// Feature Name: EventLine4RisingEdgeFrameID
+/// Display Name: EventLine4RisingEdgeFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventLine4RisingEdgeTimestamp
+/// Display Name: EventLine4RisingEdgeTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventNotification
+/// Display Name: EventNotification
+/// Tooltip: 
+/// Description: Activate event-notification on the GigE Vision message channel.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Off str Enum
+
+/// Feature Name: EventOverflow
+/// Display Name: EventOverflow
+/// Tooltip: 
+/// Description: ID value of overflow event. The overflow event occurs when one or more notification events are lost on the camera. If you use the message channel for event notification, you are always subscribed to this event.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 65534 int
+
+/// Feature Name: EventOverflowFrameID
+/// Display Name: EventOverflowFrameID
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventOverflowTimestamp
+/// Display Name: EventOverflowTimestamp
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: EventSelector
+/// Display Name: EventSelector
+/// Tooltip: 
+/// Description: Activate event-notification on the GigE Vision message channel.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: AcquisitionStart str Enum
+
+/// Feature Name: EventsEnable1
+/// Display Name: EventsEnable1
+/// Tooltip: 
+/// Description: Activate event-notification on the GigE Vision message channel. For programmers. See register documentation.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: ExposureAuto
+/// Display Name: ExposureAuto
+/// Tooltip: 
+/// Description: Automatic exposure mode. Off: automatic mode is off. Once: auto-exposure occurs until target is achieved, then ExposureAuto returns to Off. Continuous: auto-exposure always runs.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Continuous str Enum
+
+/// Feature Name: ExposureAutoAdjustTol
+/// Display Name: ExposureAutoAdjustTol
+/// Tooltip: 
+/// Description: Tolerance, in percent, allowed from the ideal exposure value, within which the auto-exposure does not run. This prevents needless small adjustments from occurring each image.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 5 int
+
+/// Feature Name: ExposureAutoAlg
+/// Display Name: ExposureAutoAlg
+/// Tooltip: 
+/// Description: Algorithm used for auto-exposure. Mean: target a particular mean value of all measured pixels in the image. FitRange: adjust the maximum pixel value to fit the sensor range.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: FitRange str Enum
+
+/// Feature Name: ExposureAutoMax
+/// Display Name: ExposureAutoMax
+/// Tooltip: 
+/// Description: Maximum auto-exposure value, in microseconds.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 50000 int
+
+/// Feature Name: ExposureAutoMin
+/// Display Name: ExposureAutoMin
+/// Tooltip: 
+/// Description: Minimum auto-exposure value, in microseconds.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 625 int
+
+/// Feature Name: ExposureAutoOutliers
+/// Display Name: ExposureAutoOutliers
+/// Tooltip: 
+/// Description: Number of upper outliers to discard before calculating exposure adjustments. This is in ten-thousandths of the number pixels in the image.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: ExposureAutoRate
+/// Display Name: ExposureAutoRate
+/// Tooltip: 
+/// Description: Rate of exposure adjustments, from 1 (slowest) to 100 (fastest). Use this control to slow down the auto-exposure adjustments.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 100 int
+
+/// Feature Name: ExposureAutoTarget
+/// Display Name: ExposureAutoTarget
+/// Tooltip: 
+/// Description: When ExposureAutoAlg is Mean, this is the target image mean value, in percent. Higher values result in brighter images.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 50 int
+
+/// Feature Name: ExposureMode
+/// Display Name: ExposureMode
+/// Tooltip: 
+/// Description: Method of control for exposure duration. Timed mode: exposure duration is set by ExposureTimeAbs.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Timed str Enum
+
+/// Feature Name: ExposureTimeAbs
+/// Display Name: ExposureTimeAbs
+/// Tooltip: 
+/// Description: Exposure duration, in microseconds.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 50000 float
+
+/// Feature Name: FirmwareVerBuild
+/// Display Name: FirmwareVerBuild
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 4 int
+
+/// Feature Name: FirmwareVerMajor
+/// Display Name: FirmwareVerMajor
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 1 int
+
+/// Feature Name: FirmwareVerMinor
+/// Display Name: FirmwareVerMinor
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 42 int
+
+/// Feature Name: GVCPCmdRetries
+/// Display Name: Command Retries
+/// Tooltip: 
+/// Description: Number of time a particular command to the device will be resent when no answer is being received.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 5 int
+
+/// Feature Name: GVCPCmdTimeout
+/// Display Name: Command Timeout
+/// Tooltip: 
+/// Description: Timeout waiting for an answer from the device.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 250 int
+
+/// Feature Name: GVSPAdjustPacketSize
+/// Display Name: GVSP Adjust Packet Size
+/// Tooltip: 
+/// Description: Request the packet size used to be adjusted automatically.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: [None]
+
+/// Feature Name: GVSPBurstSize
+/// Display Name: GVSP Burst Size
+/// Tooltip: 
+/// Description: Maximum number of GVSP packets to be processed in a burst.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 1 int
+
+/// Feature Name: GVSPDriver
+/// Display Name: GVSP Driver Selector
+/// Tooltip: 
+/// Description: Streaming driver to be used.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: Socket str Enum
+
+/// Feature Name: GVSPFilterVersion
+/// Display Name: GVSP Filter Version
+/// Tooltip: 
+/// Description: Version of the GVSP Filter driver.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: N/A str
+
+/// Feature Name: GVSPHostReceiveBuffers
+/// Display Name: GVSP Host Receive Buffers
+/// Tooltip: 
+/// Description: Number of receive buffers to be used by the OS' socket (hint).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 1024 int
+
+/// Feature Name: GVSPMaxLookBack
+/// Display Name: GVSP Max Look Back
+/// Tooltip: 
+/// Description: Size of the missing GVSP packets detection windows.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 30 int
+
+/// Feature Name: GVSPMaxRequests
+/// Display Name: GVSP Max Requests
+/// Tooltip: 
+/// Description: Maximum number of requests (to the device) for a missing GVSP packet.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: GVSPMaxWaitSize
+/// Display Name: GVSP Max Wait Size
+/// Tooltip: 
+/// Description: Maximum number of received GVSP packets following a resend request to wait before requesting again.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 100 int
+
+/// Feature Name: GVSPMissingSize
+/// Display Name: GVSP Missing Size
+/// Tooltip: 
+/// Description: Maximum number of simulatenous missing GVSP packets before dropping the frame (0 = OFF).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 256 int
+
+/// Feature Name: GVSPPacketSize
+/// Display Name: GVSP Packet Size
+/// Tooltip: 
+/// Description: GVSP Packet size (in bytes).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 1500 int
+
+/// Feature Name: GVSPTiltingSize
+/// Display Name: GVSP Tilting Size
+/// Tooltip: 
+/// Description: Maximum number GVSP packets received from a following frame before dropping the frame (0 = OFF).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 100 int
+
+/// Feature Name: GVSPTimeout
+/// Display Name: GVSP Timeout
+/// Tooltip: 
+/// Description: Timeout (in ms) used for stream packets.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 70 int
+
+/// Feature Name: GainAuto
+/// Display Name: GainAuto
+/// Tooltip: 
+/// Description: Automatic exposure mode. Off: automatic mode is off. Once: auto-gain occurs until target is achieved, then GainAuto returns to Off. Continuous: auto-gain always runs.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Continuous str Enum
+
+/// Feature Name: GainAutoAdjustTol
+/// Display Name: GainAutoAdjustTol
+/// Tooltip: 
+/// Description: Tolerance, in percent, allowed from the ideal gain value, within which the auto-gain does not run. This prevents needless small adjustments from occurring each image.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 5 int
+
+/// Feature Name: GainAutoMax
+/// Display Name: GainAutoMax
+/// Tooltip: 
+/// Description: Maximum auto-gain value.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 25 int
+
+/// Feature Name: GainAutoMin
+/// Display Name: GainAutoMin
+/// Tooltip: 
+/// Description: Minimum auto-gain value.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: GainAutoOutliers
+/// Display Name: GainAutoOutliers
+/// Tooltip: 
+/// Description: Number of upper outliers to discard before calculating gain adjustments. This is in ten-thousandths of the number pixels in the image.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 100 int
+
+/// Feature Name: GainAutoRate
+/// Display Name: GainAutoRate
+/// Tooltip: 
+/// Description: Rate of gain adjustments, from 1 (slowest) to 100 (fastest). Use this control to slow down the auto-gain adjustments.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 50 int
+
+/// Feature Name: GainAutoTarget
+/// Display Name: GainAutoTarget
+/// Tooltip: 
+/// Description: This is the target image mean value, in percent.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 50 int
+
+/// Feature Name: GainRaw
+/// Display Name: GainRaw
+/// Tooltip: 
+/// Description: Gain value of analog A/D stage. Units are usually in dB.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 19 int
+
+/// Feature Name: GainSelector
+/// Display Name: GainSelector
+/// Tooltip: 
+/// Description: (GenICam boilerplate. Always All.)
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: All str Enum
+
+/// Feature Name: GevCurrentDefaultGateway
+/// Display Name: Current Default Gateway
+/// Tooltip: 
+/// Description: Current Default Gateway of the device.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 16820416 int
+
+/// Feature Name: GevCurrentIPAddress
+/// Display Name: Current IP Address
+/// Tooltip: 
+/// Description: Current IP address of the device.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 3338709184 int
+
+/// Feature Name: GevCurrentSubnetMask
+/// Display Name: Current Subnet Mask
+/// Tooltip: 
+/// Description: Current Subnet Mask of the device.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 16777215 int
+
+/// Feature Name: GevDeviceMACAddress
+/// Display Name: Device MAC Address
+/// Tooltip: 
+/// Description: 48-bit MAC address of the GVCP interface of the selected remote device.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 65246724347 int
+
+/// Feature Name: GevHeartbeatInterval
+/// Display Name: Heartbeat Interval
+/// Tooltip: 
+/// Description: Interval of time (in ms) after which a heartbeat is sent by the host.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 1450 int
+
+/// Feature Name: GevHeartbeatTimeout
+/// Display Name: Heartbeat Timeout
+/// Tooltip: 
+/// Description: Interval of time (in ms) after which a device rejects control by a host if no heartbeat activity is registered.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 3000 int
+
+/// Feature Name: GevIPConfigurationMode
+/// Display Name: IP Configuration Mode
+/// Tooltip: 
+/// Description: Current IP configuration mode.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: Persistent str Enum
+
+/// Feature Name: GevPersistentDefaultGateway
+/// Display Name: Persistent Default Gateway
+/// Tooltip: 
+/// Description: Persistent Default Gateway of the device.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 16820416 int
+
+/// Feature Name: GevPersistentIPAddress
+/// Display Name: Persistent IP Address
+/// Tooltip: 
+/// Description: Persistent IP address of the device.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 3338709184 int
+
+/// Feature Name: GevPersistentSubnetMask
+/// Display Name: Persistent Subnet Mask
+/// Tooltip: 
+/// Description: Persistent Subnet Mask of the device.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 16777215 int
+
+/// Feature Name: GevSCPSPacketSize
+/// Display Name: GevSCPSPacketSize
+/// Tooltip: 
+/// Description: 
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 1500 int
+
+/// Feature Name: GevTimestampControlLatch
+/// Display Name: GevTimestampControlLatch
+/// Tooltip: 
+/// Description: Capture timestamp and store in GevTimestampValue.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: [None]
+
+/// Feature Name: GevTimestampControlReset
+/// Display Name: GevTimestampControlReset
+/// Tooltip: 
+/// Description: Reset the timestamp.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: [None]
+
+/// Feature Name: GevTimestampTickFrequency
+/// Display Name: GevTimestampTickFrequency
+/// Tooltip: 
+/// Description: Frequency of image timestamp, in Hertz.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 62500000 int
+
+/// Feature Name: GevTimestampValue
+/// Display Name: GevTimestampValue
+/// Tooltip: 
+/// Description: Value of timestamp, when latched by GevTimestampControlLatch.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: Height
+/// Display Name: Height
+/// Tooltip: 
+/// Description: Height of image, in pixels.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 1440 int
+
+/// Feature Name: HeightMax
+/// Display Name: HeightMax
+/// Tooltip: 
+/// Description: Maximum image height for the current image mode. Vertical binning, for example, will change this value.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 3248 int
+
+/// Feature Name: ImageSize
+/// Display Name: ImageSize
+/// Tooltip: 
+/// Description: Size of images, in bytes, for the current format and size.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 2764800 int
+
+/// Feature Name: MulticastEnable
+/// Display Name: Multicast Enable
+/// Tooltip: 
+/// Description: Enable multicast streaming.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 bool
+
+/// Feature Name: MulticastIPAddress
+/// Display Name: Multicast IP Address
+/// Tooltip: 
+/// Description: IP address of the target multicasting group.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 823132143 int
+
+/// Feature Name: NonImagePayloadSize
+/// Display Name: NonImagePayloadSize
+/// Tooltip: 
+/// Description: Maximum size of chunk data, not including the image chunk, in the image block payload.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: OffsetX
+/// Display Name: OffsetX
+/// Tooltip: 
+/// Description: Starting column of the readout region (relative to the first column of the sensor) in pixels.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: OffsetY
+/// Display Name: OffsetY
+/// Tooltip: 
+/// Description: Starting row of the readout region (relative to the first row of the sensor) in pixels.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: PayloadSize
+/// Display Name: PayloadSize
+/// Tooltip: 
+/// Description: Maximum size of image block payload.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 2764800 int
+
+/// Feature Name: PixelFormat
+/// Display Name: PixelFormat
+/// Tooltip: 
+/// Description: Format of the image data.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: BayerGR8 str Enum
+
+/// Feature Name: RecorderPreEventCount
+/// Display Name: RecorderPreEventCount
+/// Tooltip: 
+/// Description: This is the number of pre-event images to acquire in the Recorder acquisition mode. This must be less than or equal to AcquisitionFrameCount.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: SensorBits
+/// Display Name: SensorBits
+/// Tooltip: 
+/// Description: Maximum bit depth of sensor.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 12 int
+
+/// Feature Name: SensorHeight
+/// Display Name: SensorHeight
+/// Tooltip: 
+/// Description: Full height of image sensor.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 3248 int
+
+/// Feature Name: SensorType
+/// Display Name: SensorType
+/// Tooltip: 
+/// Description: Type of image sensor.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: Bayer str Enum
+
+/// Feature Name: SensorWidth
+/// Display Name: SensorWidth
+/// Tooltip: 
+/// Description: Full width of image sensor.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 4872 int
+
+/// Feature Name: StatFrameDelivered
+/// Display Name: Stat Frames Delivered
+/// Tooltip: 
+/// Description: Number of error-free frames that have been delivered to the TL consumer.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StatFrameDropped
+/// Display Name: Stat Frames Dropped
+/// Tooltip: 
+/// Description: Number of incomplete (due to missing packets) frames received by the host (not including shoved frames).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StatFrameRate
+/// Display Name: Stat Frame Rate
+/// Tooltip: 
+/// Description: Rate (frames/s) at which the device is sending frames to the host (derived from the frame timestamps).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 float
+
+/// Feature Name: StatFrameRescued
+/// Display Name: Stat Frames Rescued
+/// Tooltip: 
+/// Description: Number of frames that initially had missing packets but were successfully completed after packet resend.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StatFrameShoved
+/// Display Name: Stat Frames Shoved
+/// Tooltip: 
+/// Description: Number of frames dropped because the transfer of a following frame was completed earlier.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StatFrameUnderrun
+/// Display Name: Stat Frames Underrun
+/// Tooltip: 
+/// Description: Number of frames missed due to the non-availability of a user supplied buffer (buffer underrun).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StatLocalRate
+/// Display Name: Stat Local Rate
+/// Tooltip: 
+/// Description: Rate (frames/s) at which (complete and incomplete) frames have been received by the host (derived from the host clock).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 float
+
+/// Feature Name: StatPacketErrors
+/// Display Name: Stat Packets Errors
+/// Tooltip: 
+/// Description: Number of received packets that are erroneous (usually signal an hardware issue on the device).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StatPacketMissed
+/// Display Name: Stat Packets Missed
+/// Tooltip: 
+/// Description: Number of packets expected and not received by the host (not including successfully resent packets).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StatPacketReceived
+/// Display Name: Stat Packets Received
+/// Tooltip: 
+/// Description: Number of error-free packets received and processed by the host (including successfully resent packets).
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StatPacketRequested
+/// Display Name: Stat Packets Requested
+/// Tooltip: 
+/// Description: Number of missing packets that were requested for resend from the device.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StatPacketResent
+/// Display Name: Stat Packets Resent
+/// Tooltip: 
+/// Description: Number of missing packets that were resent by the device after having been requested.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StatTimeElapsed
+/// Display Name: Stat Time Elapsed
+/// Tooltip: 
+/// Description: Elapsed time (in s) since the streaming was started.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 float
+
+/// Feature Name: StreamAnnounceBufferMinimum
+/// Display Name: Stream Announce Buffer Minimum
+/// Tooltip: 
+/// Description: Minimal number of buffers to announce to enable selected acquisition mode.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 1 int
+
+/// Feature Name: StreamAnnouncedBufferCount
+/// Display Name: Stream Announced Buffer Count
+/// Tooltip: 
+/// Description: Number of announced (known) buffers on this stream.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StreamBufferHandlingMode
+/// Display Name: Stream Buffer Handling Mode
+/// Tooltip: 
+/// Description: Available buffer handling modes of this stream.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Default str Enum
+
+/// Feature Name: StreamBytesPerSecond
+/// Display Name: StreamBytesPerSecond
+/// Tooltip: 
+/// Description: Bandwidth allocation: the camera will consume up to this bandwidth, in bytes per second. You must set this value if multiple cameras share the same ethernet adapter, otherwise data will be lost. The sum of all StreamBytesPerSecond values of all cameras must not exceed the available bandwidth.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 12400000 int
+
+/// Feature Name: StreamFrameRateConstrain
+/// Display Name: StreamFrameRateConstrain
+/// Tooltip: 
+/// Description: When enabled, the frame rate of the camera is constrained by available bandwidth. When disabled, the camera can image faster than it can send data.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 1 bool
+
+/// Feature Name: StreamHoldCapacity
+/// Display Name: StreamHoldCapacity
+/// Tooltip: 
+/// Description: Maximum number of images (for the current size and format) which can be stored on the camera when StreamHold is enabled.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 11 int
+
+/// Feature Name: StreamHoldEnable
+/// Display Name: StreamHoldEnable
+/// Tooltip: 
+/// Description: Control on-camera image storage; this control is like a "pause" button for the image stream. When enabled, images remain stored on the camera, and are not transmitted to the host. When disabled, the image stream resumes, and any stored images are sent to the host.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: Off str Enum
+
+/// Feature Name: StreamID
+/// Display Name: Stream ID
+/// Tooltip: 
+/// Description: Device unique ID for the stream.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: DEV_000F310200FB-Stream-000 str
+
+/// Feature Name: StreamType
+/// Display Name: Stream Type
+/// Tooltip: 
+/// Description: Identifies the transport layer technology of the stream.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: GEV str Enum
+
+/// Feature Name: StrobeDelay
+/// Display Name: StrobeDelay
+/// Tooltip: 
+/// Description: Delay from strobe trigger to strobe output, in microseconds.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StrobeDuration
+/// Display Name: StrobeDuration
+/// Tooltip: 
+/// Description: Duration of strobe, in microseconds.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: StrobeDurationMode
+/// Display Name: StrobeDurationMode
+/// Tooltip: 
+/// Description: Mode of the strobe timing unit. Source: strobe duration is the same as source duration. Controlled: strobe duration is set by StrobeDuration.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: Source str Enum
+
+/// Feature Name: StrobeSource
+/// Display Name: StrobeSource
+/// Tooltip: 
+/// Description: Signal source of the strobe timing unit. See SyncOutSource for descriptions.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: FrameTrigger str Enum
+
+/// Feature Name: SyncInGlitchFilter
+/// Display Name: SyncInGlitchFilter
+/// Tooltip: 
+/// Description: Glitch filter on sync-in line, in nanoseconds.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: SyncInLevels
+/// Display Name: SyncInLevels
+/// Tooltip: 
+/// Description: Momentary logic levels of the hardware line inputs.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: SyncInSelector
+/// Display Name: SyncInSelector
+/// Tooltip: 
+/// Description: Select the sync-in line to control with {SyncInGlitchFilter}.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: SyncIn1 str Enum
+
+/// Feature Name: SyncOutLevels
+/// Display Name: SyncOutLevels
+/// Tooltip: 
+/// Description: Output levels of hardware sync outputs, for output(s) in GPO mode. (Note: SyncOutPolarity can invert these values.)
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: 0 int
+
+/// Feature Name: SyncOutPolarity
+/// Display Name: SyncOutPolarity
+/// Tooltip: 
+/// Description: Polarity applied to the sync-out line specified by SyncOutSelector.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: Normal str Enum
+
+/// Feature Name: SyncOutSelector
+/// Display Name: SyncOutSelector
+/// Tooltip: 
+/// Description: Select the sync-out line to control with {SyncOutSource, SyncOutPolarity}.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: SyncOut1 str Enum
+
+/// Feature Name: SyncOutSource
+/// Display Name: SyncOutSource
+/// Tooltip: 
+/// Description: Signal source of the sync-out line specified by SyncOutSelector. GPO: general purpose output. AcquisitionTriggerReady: acquisition trigger may occur. FrameTriggerReady: frame trigger may occur. Exposing: exposure in progress. FrameReadout: image readout in progress. Imaging: exposure or frame readout in progress. Acquiring: acquisition is running. LineIn: external line input. Strobe: source is strobe timing unit.
+/// SNFC Namespace: Custom
+/// Unit: 
+/// Value: GPO str Enum
+
+/// Feature Name: TriggerActivation
+/// Display Name: TriggerActivation
+/// Tooltip: 
+/// Description: Type of activation, for hardware triggers. This controls edge/level and polarity sensitivities.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: RisingEdge str Enum
+
+/// Feature Name: TriggerDelayAbs
+/// Display Name: TriggerDelayAbs
+/// Tooltip: 
+/// Description: Delay from hardware trigger activation to trigger effect, in microseconds.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 0 float
+
+/// Feature Name: TriggerMode
+/// Display Name: TriggerMode
+/// Tooltip: 
+/// Description: Enable or disable this trigger. Note: when the FrameStart trigger is disabled, images are triggered at a fixed rate specified by AcquisitionFrameRateAbs.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: On str Enum
+
+/// Feature Name: TriggerOverlap
+/// Display Name: TriggerOverlap
+/// Tooltip: 
+/// Description: Permitted window of trigger activation, relative to previous frame.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Off str Enum
+
+/// Feature Name: TriggerSelector
+/// Display Name: TriggerSelector
+/// Tooltip: 
+/// Description: Select a trigger here, then use the controls {TriggerMode, TriggerSoftware, TriggerSource, TriggerActivation, TriggerOverlap, TriggerDelayAbs} to setup and read the trigger attributes. FrameStart is the trigger which starts each image (when acquisition is running). AcquisitionStart is the trigger which starts the acquisition process.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: FrameStart str Enum
+
+/// Feature Name: TriggerSoftware
+/// Display Name: TriggerSoftware
+/// Tooltip: 
+/// Description: This software command effects a trigger.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: [None]
+
+/// Feature Name: TriggerSource
+/// Display Name: TriggerSource
+/// Tooltip: 
+/// Description: Source of trigger, when TriggerMode is On. This might be an hardware trigger, a fixed rate generator, or software trigger only.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: FixedRate str Enum
+
+/// Feature Name: UserSetDefaultSelector
+/// Display Name: UserSetDefaultSelector
+/// Tooltip: 
+/// Description: On power-up or reset, this user set is loaded.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Default str Enum
+
+/// Feature Name: UserSetLoad
+/// Display Name: UserSetLoad
+/// Tooltip: 
+/// Description: Load camera parameters from the user set specified by UserSetSelector.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: [None]
+
+/// Feature Name: UserSetSave
+/// Display Name: UserSetSave
+/// Tooltip: 
+/// Description: Save camera parameters to the user set specified by UserSetSelector.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: [None]
+
+/// Feature Name: UserSetSelector
+/// Display Name: UserSetSelector
+/// Tooltip: 
+/// Description: Select a user set, for loading or saving camera parameters.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: Default str Enum
+
+/// Feature Name: Width
+/// Display Name: Width
+/// Tooltip: 
+/// Description: Width of image, in pixels.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 1920 int
+
+/// Feature Name: WidthMax
+/// Display Name: WidthMax
+/// Tooltip: 
+/// Description: Maximum image width for the current image mode. Horizontal binning, for example, will change this value.
+/// SNFC Namespace: Standard
+/// Unit: 
+/// Value: 4872 int
+
+... logging to /home/pipedream/.ros/log/d3145482-f425-11e9-a9e9-e89eb43cf843/roslaunch-pipedream-9025.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/pipedream/PitCollector/src/hardware/avt_vimba_camera/launch/mono_camera.launch
+[1mstarted roslaunch server http://pipedream:42371/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /camera/acquisition_mode: Continuous
+ * /camera/acquisition_rate: 12
+ * /camera/binning_x: 1
+ * /camera/binning_y: 1
+ * /camera/camera_info_url: file:///home/pipe...
+ * /camera/decimation_x: 1
+ * /camera/decimation_y: 1
+ * /camera/exposure: 1000
+ * /camera/exposure_auto: Continuous
+ * /camera/frame_id: left_optical
+ * /camera/gain: 0
+ * /camera/gain_auto: Continuous
+ * /camera/guid: DEV_000F310200FB
+ * /camera/height: 1440
+ * /camera/ip: 192.168.0.199
+ * /camera/pixel_format: BayerRG8
+ * /camera/show_debug_prints: True
+ * /camera/stream_bytes_per_second: 45000000
+ * /camera/trig_timestamp_topic: 
+ * /camera/trigger_source: FixedRate
+ * /camera/whitebalance_auto: Continuous
+ * /camera/width: 1920
+ * /camera/x_offset: 8
+ * /camera/y_offset: 9
+ * /rosdistro: melodic
+ * /rosversion: 1.14.3
+
+NODES
+  /camera/
+    image_proc (image_proc/image_proc)
+  /
+    camera (avt_vimba_camera/mono_camera_node)
+
+auto-starting new master
+[1mprocess[master]: started with pid [9035][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/pipedream/PitCollector/src/hardware/avt_vimba_camera/launch/mono_camera.launch http://localhost:11311
+[1msetting /run_id to d3145482-f425-11e9-a9e9-e89eb43cf843[0m
+[1mprocess[rosout-1]: started with pid [9046][0m
+started core service [/rosout]
+[1mprocess[camera/image_proc-2]: started with pid [9049][0m
+[1mprocess[camera-3]: started with pid [9054][0m
+[camera/image_proc-2] killing on exit
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

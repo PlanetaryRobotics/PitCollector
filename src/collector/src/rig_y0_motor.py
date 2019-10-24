@@ -56,7 +56,7 @@ def y0_axis_go_to(self, pos):
             if self.y0_axis_set_down() == True:
                 #move for 8 seconds, then slowly in 3 second increments
                 #print('y0_axis_go_to: move for fixed time')
-                if self.y0_move_for_fixed_time(['F4'],14):
+                if self.y0_move_for_fixed_time(['F4'],16):
                     print('y0 axis traveled from F5 to ', pos)
                     return True
                 time.sleep(.5)

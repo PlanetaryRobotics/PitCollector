@@ -72,6 +72,7 @@ def x_axis_go_to(self, pos):
         sys.exit(0)
         return False
 
+
     if self.check_for_positive_pins(['F0']):
         if pos == 'F0':
             return True

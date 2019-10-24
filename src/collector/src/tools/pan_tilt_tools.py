@@ -18,5 +18,3 @@ def setPanTilt(pan_deg, tilt_deg):
         resp = ptu_srv(req)
     except rospy.ServiceException, e:
         print("Service call failed: {}".format(e))
-
-    time.sleep(5)

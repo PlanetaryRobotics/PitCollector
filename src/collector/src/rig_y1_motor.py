@@ -33,7 +33,7 @@ def y1_axis_go_to(self, pos):
                 #it moves VERY fast and there's a brief delay with the mechnical switch that could break things
                 #move for 8 seconds, then slowly in 3 second increments
                 #print('y1_axis_go_to: move for fixed time')
-                if self.y1_move_for_fixed_time(['F7'],16):
+                if self.y1_move_for_fixed_time(['F7'],17):
                     print('y1 axis traveled from F6 to ', pos)
                     return True
                 time.sleep(.5)
@@ -56,7 +56,7 @@ def y1_axis_go_to(self, pos):
             if self.y1_axis_set_down() == True:
                 #move for 8 seconds, then slowly in 3 second increments
                 #print('y1_axis_go_to: move for fixed time')
-                if self.y1_move_for_fixed_time(['F6'],14):
+                if self.y1_move_for_fixed_time(['F6'],17):
                     print('y1 axis traveled from F7 to ', pos)
                     return True
                 time.sleep(.5)
