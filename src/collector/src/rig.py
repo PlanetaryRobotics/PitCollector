@@ -22,7 +22,6 @@ class Rig:
         self.tilt = 0
         #temporarily turns off for my sanity
         #self.set_pan_tilt(self.pan, self.tilt)
-        
         self.imu_sub = rospy.Subscriber("/imu/data", Imu, self.imu_callback)
         self.roll = 0
         self.pitch = 0
@@ -34,6 +33,7 @@ class Rig:
         '1': ['F0','F4','F6'], '2':['F1','F4','F6'], '3':['F2','F4','F6'],  \
         }
 
+        #this map recognizes when the robot is in a hidden configuration
         self.positionMap_alternate_config = { \
         '7': ['F0','F5','F7'], '8':['F1','F5','F7'], '9':['F2','F5','F7'], \
         '4': ['F0','F4','F7'], '5':['F1','F4','F7'], '6':['F2','F4','F7'],  \
@@ -119,8 +119,8 @@ class Rig:
             if true_pin_names is not None:
                 #print (true_pin_names)
                 #https://www.geeksforgeeks.org/python-check-if-two-lists-are-identical/
-                print(true_pin_names[0], true_pin_names[1], true_pin_names[2])
-                print(self.positionMap[position])
+                #print(true_pin_names[0], true_pin_names[1], true_pin_names[2])
+                #print(self.positionMap[position])
                 if true_pin_names[0] in self.positionMap[position] and true_pin_names[1] in self.positionMap[position] and true_pin_names[2] in self.positionMap[position]:
                     #print('convert_pin triggers true')
                     #print(true_pin_names)
@@ -133,12 +133,13 @@ class Rig:
                     #raise the lower lift to get into the pose that this program expects
                     print('rig: youre in an unexpected pose. correcting now')
                     #raise the lower lift up
-                    self.y0_axis_go_to(['F5'])
+                    self.y0_axis_go_to('F5')
                     #drop the upper lift down
-                    self.y1_axis_go_to(['F6'])
+                    self.y1_axis_go_to('F6')
                     print('rig: returned pose to expected position')
                 else:
-                    print('Failed to convert positive pin names to position names') 
+                    #print('Failed to convert positive pin names to position names') 
+                    pass
             else:
                 return 'null_position'
         return -1
@@ -245,7 +246,17 @@ class Rig:
 
     def run_full_sequence(self,camera_topic, json_filepath,data_filepath):
         print('rig: loading json position sequence')
-        print(self.get_current_position())
+        #print(self.get_current_position())
+        #adjust for pitch before each sequence
+        adjust_for_pitch_bool = 1
+        pitch_adjustment = 0
+        roll = 0
+        pitch = 0 
+        roll, pitch = self.get_roll_pitch()
+        #print('pitch:', pitch)
+        pitch_adjustment = -1 * pitch
+        #print('pitch adjustment', pitch_adjustment)
+
         with open(json_filepath) as json_file:
             data = json.load(json_file)
 
@@ -259,7 +270,7 @@ class Rig:
             if cnt == 0:
                 position = position_pan_tilt[0]
                 pan  = position_pan_tilt[1]
-                tilt = position_pan_tilt[2]
+                tilt = position_pan_tilt[2] + adjust_for_pitch_bool * pitch_adjustment
                 #goto first position
                 print('rig: initialize position',position)
                 self.go_to_pos(position)
@@ -287,7 +298,8 @@ class Rig:
             if pan != position_pan_tilt[1] or tilt != position_pan_tilt[2]:
                 #goto next pan tilt
                 pan  = position_pan_tilt[1]
-                tilt = position_pan_tilt[2]
+                #add a slight tilt adjustment to each iteration
+                tilt = position_pan_tilt[2] + adjust_for_pitch_bool * pitch_adjustment
                 #goto pan/tilt
                 print('rig: change pan/tilt',pan,tilt )
                 self.set_pan_tilt(pan,tilt)

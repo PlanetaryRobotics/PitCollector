@@ -46,7 +46,7 @@ class Collector:
         #print('collector: in gui image_callback')
         try:
             # grab every nth image
-            if self.image_stream_count % 3 == 0 :
+            if self.image_stream_count % 5 == 0 :
                 #print("collector: streaming received image from image_raw")
                 cv2_img = self.bridge.imgmsg_to_cv2(msg, "bgr8")
 
@@ -112,9 +112,10 @@ class Collector:
             print("1 - run the exposure test")
             print("2 - run the full sequence")
             print("3 - run a checkout sequence")
-            print("4 - go to home position without scraping the ground")
-            print("5 - run short_test.json for debugging")
-            print("6 - quit and kill the program")
+            print("4 - run short_test.json for debugging")
+            print("5 - go to home position without scraping the ground")
+            print("6 - read the roll pitch")
+            print("7 - quit and kill the program")
             val = input("Enter your option: ")
             if val == 1:
                 print('')
@@ -148,10 +149,6 @@ class Collector:
                 self.rig.go_home_with_safeguards()
             elif val == 4:
                 print('')
-                print('Going to home position with safeguards for scraping the ground')
-                self.rig.go_home_with_safeguards()
-            elif val == 5:
-                print('')
                 data_folder = str(raw_input("What do you want to name your folder (example: checkout_sequence): "))
                 print("Running debug test sequence:")
                 #clean up the folder name before saving it
@@ -160,7 +157,13 @@ class Collector:
                 self.rig.run_full_sequence('/camera/image_color','/home/pipedream/PitCollector/json_sequences/short_test.json',data_filepath)
                 print('collector: going home with safeguards')
                 self.rig.go_home_with_safeguards()
+            elif val == 5:
+                print('')
+                print('Going to home position with safeguards for scraping the ground')
+                self.rig.go_home_with_safeguards()
             elif val == 6:
+                print('roll,pitch',self.rig.get_roll_pitch())
+            elif val == 7:
                 sys.exit(0)
             else:
                 print('Invalid input')
