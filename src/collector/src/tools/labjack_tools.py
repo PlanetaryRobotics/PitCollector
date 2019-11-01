@@ -56,7 +56,7 @@ def writeDIO(pin_name, value):
         try:
             write_srv = rospy.ServiceProxy('/labjack/write_dio/', WriteDIO)
             resp = write_srv(pinMap[pin_name], value)
-            print('writeDIO success')
+            #print('writeDIO success')
         except rospy.ServiceException, e:
             print("Service call failed: %s" % e)
     else:

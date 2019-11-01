@@ -41,8 +41,8 @@ def y1_axis_go_to(self, pos):
                     if self.y1_move_for_fixed_time(['F7'],3):
                         print('y1 axis traveled from F6 to ', pos)
                         return True
-                    print('sleep')
-                    time.sleep(1)
+                    #print('sleep')
+                    time.sleep(.5)
             else:
                 writeMotorsDIO('E4',0)
                 print("y1_axis_go_to: error...y1 axis did not travel to ", pos)
@@ -64,7 +64,7 @@ def y1_axis_go_to(self, pos):
                     if self.y1_move_for_fixed_time(['F6'],3):
                         print('y1 axis traveled from F7 to ', pos)
                         return True
-                    print('sleep')
+                    #print('sleep')
                     time.sleep(1)
             else:
                 writeMotorsDIO('E4',0)
@@ -107,7 +107,7 @@ def y1_move_for_fixed_time(self,pos,time_length):
         #turn on motor
         writeMotorsDIO('E4',1)
         elapsed_time = time.time() - start_time
-        print(elapsed_time)
+        #print(elapsed_time)
         #double check for safety did you hit the switch
         if self.check_for_positive_pins(pos):
             print('y1 axis traveled from to ', pos)
@@ -120,7 +120,7 @@ def y1_move_for_fixed_time(self,pos,time_length):
 
 def y1_axis_find_switch(self):
 
-    ans = str(raw_input('No switch active on y1 (lower lift) axis...move UP until you hit a switch? (y/n):'))
+    ans = str(raw_input('No switch active on y1 (upper lift) axis...move UP until you hit a switch? (y/n):'))
     if ans in ['yes', 'y']:
         for i in range(1,10):
             writeDIO('E5',1)
@@ -134,7 +134,7 @@ def y1_axis_find_switch(self):
 
 
     elif ans in ['no', 'n']:
-        ans2 = str(raw_input('move y1 (lower lift) axis DOWN until you hit a switch? (y/n):'))
+        ans2 = str(raw_input('move y1 (upper lift) axis DOWN until you hit a switch? (y/n):'))
         if ans2 in ['yes','y']:
             for i in range(1,10):
                 #set motor to backwards until you hit a positive switch

@@ -16,9 +16,8 @@ from camera import Camera
 
 class Rig:
     def __init__(self):
-        self.pos = 0
-        self.go_home()
-
+        #this is for safety
+        self.kill_all_motors()
         self.pan = 0
         self.tilt = 0
         #temporarily turns off for my sanity
@@ -35,15 +34,24 @@ class Rig:
         '1': ['F0','F4','F6'], '2':['F1','F4','F6'], '3':['F2','F4','F6'],  \
         }
 
+        self.positionMap_alternate_config = { \
+        '7': ['F0','F5','F7'], '8':['F1','F5','F7'], '9':['F2','F5','F7'], \
+        '4': ['F0','F4','F7'], '5':['F1','F4','F7'], '6':['F2','F4','F7'],  \
+        '1': ['F0','F4','F6'], '2':['F1','F4','F6'], '3':['F2','F4','F6'],  \
+        }
+
         #needed to create a camera object in the rig b/c the camera is triggered from inside the rig's logic
         self.camera = Camera()
-
-        self.currentPosition = ''
-        #self.currentPosition = self.get_current_position()
         #print (self.currentPosition)
 
-        #this initilizes the positive pins list
+        #this initilizes the positive pins list which will be blank and cause problems if you don't run it before using it
         self.check_for_positive_pins(['F0'])
+        self.check_for_positive_pins(['F0'])
+        #run this after check_for_positive_pins because check_for_positive_pins needs to initialize first
+        #and this function depends on it
+        self.currentPosition = ''
+        self.currentPosition = self.get_current_position()
+        print('rig: current position is', self.currentPosition)
 
     def imu_callback(self, msg):
         quat = msg.orientation
@@ -59,13 +67,6 @@ class Rig:
         self.tilt = tilt
         setPanTilt(self.pan, self.tilt)
 
-    def go_home(self):
-        self.pos = 0
-
-    def go_to_next_pos(self):
-        print("Going to position {}.".format(pos))
-        self.pos += 1 
-
     def get_roll_pitch(self):
         return self.roll, self.pitch
 
@@ -75,11 +76,14 @@ class Rig:
         # third convert the list of positive pins into a position
         # note - I kept the pins as names instead of arrays, to make the output more readable
         values = self.read_all_input_pins()
-        print(values)
+        #print(values)
         true_names = self.return_true_pin_names(values)
-        print(true_names)
+        #print(true_names)
         self.currentPosition = self.convert_pins_to_position_names(true_names)
-        return self.currentPosition
+        if self.currentPosition not in ['1','2','3','4','5','6','7','8','9']:
+            return -1
+        else:
+            return self.currentPosition
 
     def read_all_input_pins(self):
         input_pin_names = ['F0','F1','F2','F3','F4','F5','F6','F7']
@@ -105,12 +109,34 @@ class Rig:
         return positive_pin_names
 
     def convert_pins_to_position_names(self,true_pin_names):
-        #print(self.positionMap)
+        #you need 3 switches to calculate position
+        if len(true_pin_names) < 3:
+            print('insufficient switches triggered to calculate position.')
+            return -1
+
         for position in self.positionMap.keys():
             #if no pins are on, or pin names are invalid...
-            if true_pin_names != [] and self.positionMap != {}:
-                if self.positionMap[position].sort() & true_pin_names.sort():
+            if true_pin_names is not None:
+                #print (true_pin_names)
+                #https://www.geeksforgeeks.org/python-check-if-two-lists-are-identical/
+                print(true_pin_names[0], true_pin_names[1], true_pin_names[2])
+                print(self.positionMap[position])
+                if true_pin_names[0] in self.positionMap[position] and true_pin_names[1] in self.positionMap[position] and true_pin_names[2] in self.positionMap[position]:
+                    #print('convert_pin triggers true')
+                    #print(true_pin_names)
+                    #print(self.positionMap[position])
+                    #print('Matches position:', position)
                     return position
+                elif true_pin_names[0] in self.positionMap_alternate_config[position] and true_pin_names[1] in self.positionMap_alternate_config[position] and true_pin_names[2] in self.positionMap_alternate_config[position]:
+                    #if you find yourself on the 2nd level with the lower lift down
+                    #and the upper lift up, you need to drop the upper lift and
+                    #raise the lower lift to get into the pose that this program expects
+                    print('rig: youre in an unexpected pose. correcting now')
+                    #raise the lower lift up
+                    self.y0_axis_go_to(['F5'])
+                    #drop the upper lift down
+                    self.y1_axis_go_to(['F6'])
+                    print('rig: returned pose to expected position')
                 else:
                     print('Failed to convert positive pin names to position names') 
             else:
@@ -145,23 +171,89 @@ class Rig:
         return False
 
     def go_to_pos(self,pos):
-        if pos in range(1,9):
+        #position numbers are between 1 and 9
+        # 
+        # 7 8 9
+        # 4 5 6
+        # 1 2 3
+        #
+        # position map
+        if pos in range(1,10):
+            current_pos = int(self.get_current_position()) 
+
+            #protection against bottom scraping
+            if current_pos == 1 and pos in [2,3]:
+                ans = str(raw_input("WARNING You're going to scrape on the bottom. Abort? (y/n) "))
+                if ans == 'y':
+                    sys.exit(0)
+                else:
+                    pass
+            elif current_pos == 2 and pos in [1,3]:
+                ans = str(raw_input("WARNING You're going to scrape on the bottom. Abort? (y/n) "))
+                if ans == 'y':
+                    sys.exit(0)
+                else:
+                    pass
+            elif current_pos == 3 and pos in [1,2]:
+                ans = str(raw_input("WARNING You're going to scrape on the bottom. Abort? (y/n) "))
+                if ans == 'y':
+                    sys.exit(0)
+                else:
+                    pass
             self.x_axis_go_to(self.positionMap[str(pos)][0])
             self.y0_axis_go_to(self.positionMap[str(pos)][1])        
             self.y1_axis_go_to(self.positionMap[str(pos)][2])
             print('Rig: successfully moved to position', pos)
+            #refresh current position
+            self.currentPosition = self.get_current_position()
 
     def go_home_no_safeguard(self):
         self.go_to_pos(1)
         self.set_pan_tilt(0,0)
 
-    def run_full_sequence(self,filepath):
+    def go_home_with_safeguards(self):
+        self.set_pan_tilt(0,0)
+        #read current position
+        self.currentPosition = self.get_current_position()
+        # 
+        # 7 8 9
+        # 4 5 6
+        # 1 2 3
+        #
+        # position map
+        # let's prevent scraping on the floor when at position 1,2, or 3
+        if self.currentPosition in ['4','5','6']:
+            self.go_to_pos(4)
+            self.go_to_pos(1)
+        elif self.currentPosition in ['7','8','9']:
+            self.go_to_pos(7)
+            self.go_to_pos(1)
+        elif self.currentPosition == '2':
+            self.go_to_pos(5)
+            self.go_to_pos(4)
+            self.go_to_pos(1)
+        elif self.currentPosition == '3':
+            self.go_to_pos(6)
+            self.go_to_pos(4)
+            self.go_to_pos(1)
+        elif self.currentPosition == '1':
+            pass
+        else:
+            print('go_home_with_safeguards: invalid currentPosition')
+            sys.exit(0)
+
+
+    def run_full_sequence(self,camera_topic, json_filepath,data_filepath):
         print('rig: loading json position sequence')
-        with open(filepath) as json_file:
+        print(self.get_current_position())
+        with open(json_filepath) as json_file:
             data = json.load(json_file)
-        #for each position
 
         cnt = 0
+        #added for path optimization
+        #you don't want to take images at places you've already been
+        take_images = True
+        position_set = []
         for position_pan_tilt in data['position_pan_tilt']:
             #goto first position in json
             if cnt == 0:
@@ -172,15 +264,26 @@ class Rig:
                 print('rig: initialize position',position)
                 self.go_to_pos(position)
                 #goto pan/tilt
-                print('rig: initialize pan/tilt',pan,tilt )
+                print('rig: initialize pan/tilt',pan,tilt)
                 self.set_pan_tilt(pan,tilt)
 
+                #add the first position to the set
+                position_set.append(position)
             elif position != position_pan_tilt[0]:
                 position = position_pan_tilt[0]
+                #when you move to a new position, add it to the position set
+                #if you've already been here at this position, don't take images
+                if position in position_set:
+                    take_images = False
+                    print('Rig: skipping images because weve been here before.')
+                else:
+                    position_set.append(position)
+                    take_images = True
                 #goto new position
                 print('rig: change position',position)
                 self.go_to_pos(position)
 
+            #if the pan/tilt hasn't changed since last position, don't change it
             if pan != position_pan_tilt[1] or tilt != position_pan_tilt[2]:
                 #goto next pan tilt
                 pan  = position_pan_tilt[1]
@@ -189,15 +292,19 @@ class Rig:
                 print('rig: change pan/tilt',pan,tilt )
                 self.set_pan_tilt(pan,tilt)
             
-            print('rig:taking 3 bracketed images - position number',cnt)
-            resp = self.camera.take_3_bracketed_images('/camera/image_color','../PitCollector/data',3,20000)
-
+            #pull the image_count and exposure baseline from the json file
+            print('rig current position before images',self.currentPosition)
+            if take_images == True:
+                image_count =  data["number_of_bracketed_images"] 
+                exposure_time_microseconds = data["baseline_exposure_microseconds"] 
+                bracketing_factor =  data["bracketing_factor"] 
+                print('rig:taking bracketed images at loop number', cnt)
+                resp = self.camera.take_n_bracketed_images(camera_topic,data_filepath,image_count, \
+                    exposure_time_microseconds,bracketing_factor, \
+                    self.currentPosition,self.pan,self.tilt)
             cnt += 1
             #end of loop
-
-        #end loop, close program
-        self.go_home_no_safeguard()
-        print('rig:sequence compelete')
+        print('rig: sequence compelete')
 
     def kill_all_motors(self):
         #function to shut it all off

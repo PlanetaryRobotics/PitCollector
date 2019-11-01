@@ -38,11 +38,11 @@ def y0_axis_go_to(self, pos):
                     return True
                 time.sleep(.5)
                 for i in range(1,10):
-                    if self.y0_move_for_fixed_time(['F5'],3):
+                    if self.y0_move_for_fixed_time(['F5'],4):
                         print('y0 axis traveled from F4 to ', pos)
                         return True
-                    print('sleep')
-                    time.sleep(1)
+                    #print('sleep')
+                    time.sleep(.5)
             else:
                 writeMotorsDIO('E2',0)
                 print("y0_axis_go_to: error...y0 axis did not travel to ", pos)
@@ -64,8 +64,8 @@ def y0_axis_go_to(self, pos):
                     if self.y0_move_for_fixed_time(['F4'],3):
                         print('y0 axis traveled from F5 to ', pos)
                         return True
-                    print('sleep')
-                    time.sleep(1)
+                    #print('sleep')
+                    time.sleep(.5)
             else:
                 writeMotorsDIO('E2',0)
                 print("y0_axis_go_to: error...y0 axis did not travel to ", pos)
@@ -107,7 +107,7 @@ def y0_move_for_fixed_time(self,pos,time_length):
         #turn on motor
         writeMotorsDIO('E2',1)
         elapsed_time = time.time() - start_time
-        print(elapsed_time)
+        #print(elapsed_time)
         #double check for safety did you hit the switch
         if self.check_for_positive_pins(pos):
             print('y0 axis traveled from to ', pos)

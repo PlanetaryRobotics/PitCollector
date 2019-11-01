@@ -10,8 +10,21 @@ import tkFileDialog
 import Tkinter as tk
 import ScrolledText as tkst
 import time
-
 import json
+
+#includes for grabbing image from topic stream and outputting it to GUI
+#https://answers.ros.org/question/283724/saving-images-with-image_saver-with-timestamp/
+import rospy
+from sensor_msgs.msg import Image as ImageMSG
+from cv_bridge import CvBridge, CvBridgeError
+import cv2
+import dynamic_reconfigure.client
+import rospy
+
+from std_msgs.msg import Float32
+
+
+
 
 class GUI:
     def __init__(self):
@@ -34,6 +47,10 @@ class GUI:
         # Pitch Label
         self.pitch_label = Label(self.root)
         self.pitch_label.grid(row=6, column=0, pady=30)
+
+        # Camera Labels
+        self.exposure_label = Label(self.root)
+        self.exposure_label.grid(row=7, column=0, pady=30)
 
         # Name Label
         self.name_label = Label(self.root, text="Location Name \"location_1\":")
@@ -61,17 +78,71 @@ class GUI:
         self.abort_btn = Button(self.root, text="Abort")
         self.abort_btn.grid(row=3, column=4)
 
+        self.img = ImageTk.PhotoImage(Image.open("/home/pipedream/Downloads/test.jpg"))
+        self.canvas.create_image(10, 10, anchor=NW, image=self.img)
+
+        #https://answers.ros.org/question/283724/saving-images-with-image_saver-with-timestamp/
+        rospy.Subscriber("/camera/image_raw", ImageMSG, self.image_callback)
+        self.bridge = CvBridge()
+        self.image_stream_count = 0
+
+        self.current_exposure = -1
+        rospy.Subscriber("/camera/exposure_time", Float32, self.exposure_callback)
+
         self.rig.kill_all_motors()
         self.root.after(100, self.update)
-        img = ImageTk.PhotoImage(Image.open("/home/pipedream/Downloads/test.jpg"))
-        self.canvas.create_image(10, 10, anchor=NW, image=img)
+
+        #to resolve conflict with GUI and image callback, lets create a local copy
+        #https://stackoverflow.com/questions/16235955/create-a-multichannel-zeros-mat-in-python-with-cv2/16236373
+        self.cv_mat = np.zeros((3248, 4096, 3), dtype = "uint8")
+
+    def exposure_callback(self,msg):
+        self.current_exposure = msg.data
+
+    def update_camera_labels(self):
+        self.exposure_label.config(text="Exposure (us): {}".format(self.current_exposure))
+
+    def update_GUI_image(self):
+        #update the GUI with the image from the stream
+        self.img = ImageTk.PhotoImage(Image.open('../PitCollector/GUI.jpeg'))
+        if self.img is not None:
+            pass
+            #print('collector: TK image saved.')
+        self.canvas.create_image(20, 20, anchor=NW, image=self.img)
+        self.canvas.image = self.img
+
+    def image_callback(self, msg):
+        #print('collector: in gui image_callback')
+        try:
+            # grab every nth image
+            if self.image_stream_count % 3 == 0 :
+                #print("collector: streaming received image from image_raw")
+                cv2_img = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+
+                #shrink the camera ouput for the GUI
+                cv2_img_small = cv2.resize(cv2_img,(500,500))
+                if cv2_img_small is not None:
+                    pass
+                    #print('collector: ROS image converted for GUI')
+                if cv2.imwrite('../PitCollector/GUI.jpeg', cv2_img_small):
+                    pass
+                    #print('collector: GUI image saved')
+
+                #img = cv2.imread('/tmp/1.jpg')
+                #print cv2_img.shape, cv2_img.dtype
+        except CvBridgeError, e:
+            print(e)
+        else:
+            pass
+        self.image_stream_count += 1
 
     def update(self):
         if not rospy.is_shutdown():
-            self.update_roll_pitch_labels()
-
-            self.rig.update()
-            self.root.after(100, self.update)
+            #self.update_roll_pitch_labels()
+            #self.update_camera_labels()
+            #self.update_GUI_image()
+            #self.rig.update()
+            #self.root.after(100, self.update)
         else:
             self.root.destroy()
 
@@ -80,66 +151,23 @@ class GUI:
         self.roll_label.config(text="Roll (deg): {0:.2f}".format(roll))
         self.pitch_label.config(text="Pitch (deg): {0:.2f}".format(pitch))
 
-    def mainloop(self):
-        #update the GUI image with the latest image from the camera
+######################################################3
+    def main(self):
+        #how to run Tkinter without main loop
+        #https://gordonlesti.com/use-tkinter-without-mainloop/
         self.rig.kill_all_motors()
-        self.root.after(100, self.update)
-        img = ImageTk.PhotoImage(Image.open("/home/pipedream/Downloads/test.jpg"))
-        self.canvas.create_image(10, 10, anchor=NW, image=img)
-
-        self.rig.go_home_no_safeguard()
-
-        print('collector: running full sequence start to finish')
-        self.rig.run_full_sequence('/home/pipedream/PitCollector/json_sequences/test_run.json')
-
-        #there seems to be a lag inputting pins from the Labjack. Adding a short sleep so we don't call 
-        #any movement functions that depend on it
-
-        #print('goto F2')
-        #print(self.rig.x_axis_go_to('F2'))
-
-        #print('set y0 axis')
-        #print(self.rig.y0_axis_set_up())
-
-        #why does this output empty set???
-        print(self.rig.return_true_pin_names(self.rig.read_all_input_pins()))
-
-        #print('collector: check for positive pins y1')
-        #print(self.rig.check_for_positive_pins(['F6','F7']))
-
-        #print('collector: y1 go to F6')
-        #print(self.rig.y1_axis_go_to('F6'))
-        #print('collector: y1 goto F7')
-        #print(self.rig.y1_axis_go_to('F7'))
-        #print('collector: y1 goto F6')
-        #print(self.rig.y1_axis_go_to('F6'))
-
-        #print('collector: y0 go to F4')
-        #print(self.rig.y0_axis_go_to('F4'))
-        #print('collector: y0 goto F5')
-        #print(self.rig.y0_axis_go_to('F5'))
-
-        #print('collector: x axis goto F0')
-        #print(self.rig.x_axis_go_to('F0'))
-        #print('collector: goto F1')
-        #print(self.rig.x_axis_go_to('F1'))
-
-        #print('goto F0')
-        #print(self.rig.x_axis_go_to('F0'))
-        #print('goto F1')
-        #print(self.rig.x_axis_go_to('F1'))
-
-        # Test run the ansel module
-        #rospy.loginfo('saving images in collector node')
-        #resp = self.camera.take_3_bracketed_images('/camera/image_color','../PitCollector/data',3,5000)
-        #rospy.loginfo(resp)
-        #camera_topic,file_path,image_count,step_size,base_grey,hdr]
-
-        #import os
-        #cwd = os.getcwd()
-        #print(cwd)
-
-        self.root.mainloop()
+        #self.root.after(100, self.update)
+        #self.root.mainloop()
+        while not rospy.is_shutdown():
+            #self.rig.go_home_no_safeguard()
+            #self.update()
+            #self.root.update()
+            print('collector: in main loop')
+            gui.rig.run_full_sequence('/home/pipedream/PitCollector/json_sequences/test_run.json',5,100000)
+            print('collector: main loop complete')
+        #print('collector: running camera sequence')
+        #pass data folder, image_count, baseline exposure_time_microseconds
+######################################################
 
 def kill_ros():
     import subprocess
@@ -150,12 +178,9 @@ def kill_ros():
 if __name__ == "__main__":
     rospy.init_node('collector')
     gui = GUI()
-    #give the camera time to sleet
-    #print('collector: sleeping for several seconds to let cameras w/u sequence complete')
-    #time.sleep(60)
-    gui.mainloop()
-
+    gui.main()
     if not rospy.is_shutdown():
         #kill all motors in event of abort
         gui.rig.kill_all_motors()
         kill_ros()
+
