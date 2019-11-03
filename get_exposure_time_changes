@@ -1,0 +1,41 @@
+mono_camera_node.cpp
+
+int main(int argc, char** argv)
+{
+  ros::init(argc, argv, "mono_camera_node");
+  ros::NodeHandle nh;
+  ros::NodeHandle nhp("~");
+  avt_vimba_camera::MonoCamera mc(nh,nhp);
+  ROS_INFO("MonoCamera Ready");
+
+  ros::NodeHandle nh_exposure;
+  // &AddTwo::add
+  ros::ServiceServer service = nh_exposure.advertiseService("get_exposure_time_service", 
+    &avt_vimba_camera::MonoCamera::getExposureTime,
+    &mc );
+  ROS_INFO("Ready to receive exposure requests");
+
+  ros::spin();
+  return 0;
+}
+
+
+mono_camera.cpp
+
+bool MonoCamera::getExposureTime(
+                       avt_vimba_camera::Exposure::Request &req, 
+                       avt_vimba_camera::Exposure::Response &resp)
+{
+  resp.exposuretime = cam_.getExposureTime();
+  return true;
+}
+
+avt_vimba_camera.cpp
+
+//added 10/19/19 by lee trawick to return the real-time exposure
+float AvtVimbaCamera::getExposureTime(void) {
+  float exposureTime;
+  getFeatureValue("ExposureTimeAbs", exposureTime);
+  //std::cout << exposureTime;
+  return exposureTime;
+}

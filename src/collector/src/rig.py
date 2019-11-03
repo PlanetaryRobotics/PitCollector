@@ -21,7 +21,7 @@ class Rig:
         self.pan = 0
         self.tilt = 0
         #temporarily turns off for my sanity
-        #self.set_pan_tilt(self.pan, self.tilt)
+        self.set_pan_tilt(self.pan, self.tilt)
         self.imu_sub = rospy.Subscriber("/imu/data", Imu, self.imu_callback)
         self.roll = 0
         self.pitch = 0
@@ -275,7 +275,7 @@ class Rig:
                 self.go_to_pos(position)
                 #goto pan/tilt
                 print('rig: initialize pan/tilt',pan,tilt)
-                #self.set_pan_tilt(pan,tilt)
+                self.set_pan_tilt(pan,tilt)
 
                 #add the first position to the set
                 position_set.append(position)
@@ -303,7 +303,7 @@ class Rig:
                 tilt = position_pan_tilt[2] + adjust_for_pitch_bool * self.pitch * -1
                 #goto pan/tilt
                 print('rig: change pan/tilt',pan,tilt )
-                #self.set_pan_tilt(pan,tilt)
+                self.set_pan_tilt(pan,tilt)
             
             #pull the image_count and exposure baseline from the json file
             print('rig current position before images',self.currentPosition)

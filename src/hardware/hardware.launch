@@ -12,7 +12,7 @@
     </include>
 
     <!-- Start the Pan/Tilt Node -->
-    <include file="$(find pan_tilt_driver)/launch/pan_tilt_serial.launch" output="screen">
+    <include file="$(find pan_tilt_driver)/launch/pan_tilt_serial.launch">
     </include>
 
     <include file="$(find ansel)/launch/ansel.launch"/>

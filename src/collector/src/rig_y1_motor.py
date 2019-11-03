@@ -33,12 +33,12 @@ def y1_axis_go_to(self, pos):
                 #it moves VERY fast and there's a brief delay with the mechnical switch that could break things
                 #move for 8 seconds, then slowly in 3 second increments
                 #print('y1_axis_go_to: move for fixed time')
-                if self.y1_move_for_fixed_time(['F7'],17):
+                if self.y1_move_for_fixed_time(['F7'],120):
                     print('y1 axis traveled from F6 to ', pos)
                     return True
                 time.sleep(.5)
                 for i in range(1,10):
-                    if self.y1_move_for_fixed_time(['F7'],3):
+                    if self.y1_move_for_fixed_time(['F7'],120):
                         print('y1 axis traveled from F6 to ', pos)
                         return True
                     #print('sleep')
@@ -56,12 +56,12 @@ def y1_axis_go_to(self, pos):
             if self.y1_axis_set_down() == True:
                 #move for 8 seconds, then slowly in 3 second increments
                 #print('y1_axis_go_to: move for fixed time')
-                if self.y1_move_for_fixed_time(['F6'],17):
+                if self.y1_move_for_fixed_time(['F6'],120):
                     print('y1 axis traveled from F7 to ', pos)
                     return True
                 time.sleep(.5)
                 for i in range(1,10):
-                    if self.y1_move_for_fixed_time(['F6'],3):
+                    if self.y1_move_for_fixed_time(['F6'],120):
                         print('y1 axis traveled from F7 to ', pos)
                         return True
                     #print('sleep')
@@ -94,7 +94,7 @@ def y1_move_for_fixed_time(self,pos,time_length):
     if self.check_for_positive_pins(pos) == True:
         print('y1_move_for_fixed_time: switches already triggered. exiting')
         return True
-    if time_length > 0 and time_length < 100:
+    if time_length > 0 and time_length < 500:
         pass
     else:
         print('y1_move_for_fixed_time: time length invalid', time_length)
@@ -117,7 +117,6 @@ def y1_move_for_fixed_time(self,pos,time_length):
     #turn motor off again for safety
     writeMotorsDIO('E4',0)
 
-
 def y1_axis_find_switch(self):
 
     ans = str(raw_input('No switch active on y1 (upper lift) axis...move UP until you hit a switch? (y/n):'))
@@ -128,7 +127,7 @@ def y1_axis_find_switch(self):
                 print('y1_axis_find_switch: switch triggered')
                 break
             else:
-                if self.y1_move_for_fixed_time(['F6','F7'],3):
+                if self.y1_move_for_fixed_time(['F6','F7'],120):
                     break
                 time.sleep(.5)
 
@@ -144,7 +143,7 @@ def y1_axis_find_switch(self):
                     return True
                     break
                 else:
-                    if self.y1_move_for_fixed_time(['F6','F7'],3):
+                    if self.y1_move_for_fixed_time(['F6','F7'],120):
                         return True
                         break
                     time.sleep(.5)

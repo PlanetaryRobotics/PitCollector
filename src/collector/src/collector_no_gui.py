@@ -99,11 +99,14 @@ class Collector:
             if self.rig.get_current_position() == -1:
                 print('collector: rig is out of position. It needs to be in a discrete position before doing anything.')
                 print('collector: finding all limit switches')
-                #self.rig.x_axis_find_switch()
-                #self.rig.y0_axis_find_switch()
-                #self.rig.y1_axis_find_switch()
+                if self.rig.check_for_positive_pins(['F0','F1','F2']) == False:
+                    self.rig.x_axis_find_switch()
+                if self.rig.check_for_positive_pins(['F4','F5']) == False:
+                    self.rig.y0_axis_find_switch()
+                if self.rig.check_for_positive_pins(['F6','F7']) == False:
+                    self.rig.y1_axis_find_switch()
                 print('collector: going home with safeguards')
-                #self.rig.go_home_with_safeguards()
+                self.rig.go_home_with_safeguards()
 
             print('')
             print('************************************')
@@ -115,8 +118,9 @@ class Collector:
             print("4 - run short_test.json for debugging")
             print("5 - go to home position without scraping the ground")
             print("6 - read the roll pitch")
-            print("7 - read the roll pitch")            
-            print("8 - quit and kill the program")
+            print("7 - run checkout for the PAN/TILT")
+            print("8 - go to position 1,2,3,4...9")               
+            print("9 - quit and kill the program")
             val = input("Enter your option: ")
             if val == 1:
                 print('')
@@ -135,7 +139,7 @@ class Collector:
                 #clean up the folder name before saving it
                 data_filepath = '/home/pipedream/PitCollector/data/' + self.slugify(data_folder)
                 print('Will save to',data_filepath)
-                self.rig.run_full_sequence('/camera/image_color','/home/pipedream/PitCollector/json_sequences/full_sequence (copy).json',data_filepath)
+                self.rig.run_full_sequence('/camera/image_color','/home/pipedream/PitCollector/json_sequences/full_sequence.json',data_filepath)
                 print('collector: going home with safeguards')
                 self.rig.go_home_with_safeguards()
             elif val == 3:
@@ -163,10 +167,25 @@ class Collector:
                 print('Going to home position with safeguards for scraping the ground')
                 self.rig.go_home_with_safeguards()
             elif val == 6:
+                print('')
                 print('roll,pitch',self.rig.get_roll_pitch())
+                print('')
             elif val == 7:
-                self.rig.set_pan_tilt(30,-30)
+                print('collector: running pan/tilt checkout')
+                #pan_deg = np.clip(pan_deg, -90, 90)
+                #tilt_deg = np.clip(tilt_deg, -90, 30)
+                self.rig.set_pan_tilt(90,0)
+                self.rig.set_pan_tilt(-90,0)
+                self.rig.set_pan_tilt( 0,0)
+                self.rig.set_pan_tilt(0,-90)
+                self.rig.set_pan_tilt(0,30)
+                self.rig.set_pan_tilt( 0,0)
             elif val == 8:
+                val2 = input("Which position do you want to go to [1-9]: ")
+                #pan_deg = np.clip(pan_deg, -90, 90)
+                #tilt_deg = np.clip(tilt_deg, -90, 30)
+                self.rig.go_to_pos(val2)
+            elif val == 9:
                 sys.exit(0)
             else:
                 print('Invalid input')
