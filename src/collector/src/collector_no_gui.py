@@ -55,8 +55,8 @@ class Collector:
                 if cv2_img_small is not None:
                     pass
                     #print('collector: ROS image converted for GUI')
-                if cv2.imwrite('../PitCollector/GUI.jpeg', cv2_img_small):
-                    pass
+                #if cv2.imwrite('../PitCollector/GUI.jpeg', cv2_img_small):
+                #    pass
                     #print('collector: GUI image saved')
 
                 #img = cv2.imread('/tmp/1.jpg')
@@ -99,11 +99,11 @@ class Collector:
             if self.rig.get_current_position() == -1:
                 print('collector: rig is out of position. It needs to be in a discrete position before doing anything.')
                 print('collector: finding all limit switches')
-                self.rig.x_axis_find_switch()
-                self.rig.y0_axis_find_switch()
-                self.rig.y1_axis_find_switch()
+                #self.rig.x_axis_find_switch()
+                #self.rig.y0_axis_find_switch()
+                #self.rig.y1_axis_find_switch()
                 print('collector: going home with safeguards')
-                self.rig.go_home_with_safeguards()
+                #self.rig.go_home_with_safeguards()
 
             print('')
             print('************************************')
@@ -115,7 +115,8 @@ class Collector:
             print("4 - run short_test.json for debugging")
             print("5 - go to home position without scraping the ground")
             print("6 - read the roll pitch")
-            print("7 - quit and kill the program")
+            print("7 - read the roll pitch")            
+            print("8 - quit and kill the program")
             val = input("Enter your option: ")
             if val == 1:
                 print('')
@@ -134,7 +135,7 @@ class Collector:
                 #clean up the folder name before saving it
                 data_filepath = '/home/pipedream/PitCollector/data/' + self.slugify(data_folder)
                 print('Will save to',data_filepath)
-                self.rig.run_full_sequence('/camera/image_color','/home/pipedream/PitCollector/json_sequences/full_sequence.json',data_filepath)
+                self.rig.run_full_sequence('/camera/image_color','/home/pipedream/PitCollector/json_sequences/full_sequence (copy).json',data_filepath)
                 print('collector: going home with safeguards')
                 self.rig.go_home_with_safeguards()
             elif val == 3:
@@ -164,6 +165,8 @@ class Collector:
             elif val == 6:
                 print('roll,pitch',self.rig.get_roll_pitch())
             elif val == 7:
+                self.rig.set_pan_tilt(30,-30)
+            elif val == 8:
                 sys.exit(0)
             else:
                 print('Invalid input')

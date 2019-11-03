@@ -11,6 +11,7 @@ def setPanTilt(pan_deg, tilt_deg):
 
     rospy.wait_for_service('ptu/goto')
     try:
+        print('pan_tilt_tools: setting')
         ptu_srv = rospy.ServiceProxy('ptu/goto', ptugoto)
         req = ptugotoRequest()
         req.pan = int(pan_deg)

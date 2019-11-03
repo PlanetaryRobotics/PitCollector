@@ -249,12 +249,8 @@ class Rig:
         #print(self.get_current_position())
         #adjust for pitch before each sequence
         adjust_for_pitch_bool = 1
-        pitch_adjustment = 0
-        roll = 0
-        pitch = 0 
-        roll, pitch = self.get_roll_pitch()
-        #print('pitch:', pitch)
-        pitch_adjustment = -1 * pitch
+        self.roll, self.pitch = self.get_roll_pitch()
+        print('pitch:', self.pitch)
         #print('pitch adjustment', pitch_adjustment)
 
         with open(json_filepath) as json_file:
@@ -270,13 +266,16 @@ class Rig:
             if cnt == 0:
                 position = position_pan_tilt[0]
                 pan  = position_pan_tilt[1]
-                tilt = position_pan_tilt[2] + adjust_for_pitch_bool * pitch_adjustment
+                self.roll, self.pitch = self.get_roll_pitch()
+                print('pitch:', self.pitch)
+                tilt = position_pan_tilt[2] + adjust_for_pitch_bool * self.pitch * -1
+                tilt = np.clip(tilt, -90, 30)
                 #goto first position
                 print('rig: initialize position',position)
                 self.go_to_pos(position)
                 #goto pan/tilt
                 print('rig: initialize pan/tilt',pan,tilt)
-                self.set_pan_tilt(pan,tilt)
+                #self.set_pan_tilt(pan,tilt)
 
                 #add the first position to the set
                 position_set.append(position)
@@ -284,6 +283,8 @@ class Rig:
                 position = position_pan_tilt[0]
                 #when you move to a new position, add it to the position set
                 #if you've already been here at this position, don't take images
+                self.roll, self.pitch = self.get_roll_pitch()
+                print('pitch:', self.pitch)
                 if position in position_set:
                     take_images = False
                     print('Rig: skipping images because weve been here before.')
@@ -299,10 +300,10 @@ class Rig:
                 #goto next pan tilt
                 pan  = position_pan_tilt[1]
                 #add a slight tilt adjustment to each iteration
-                tilt = position_pan_tilt[2] + adjust_for_pitch_bool * pitch_adjustment
+                tilt = position_pan_tilt[2] + adjust_for_pitch_bool * self.pitch * -1
                 #goto pan/tilt
                 print('rig: change pan/tilt',pan,tilt )
-                self.set_pan_tilt(pan,tilt)
+                #self.set_pan_tilt(pan,tilt)
             
             #pull the image_count and exposure baseline from the json file
             print('rig current position before images',self.currentPosition)
